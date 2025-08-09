@@ -7,18 +7,24 @@ void *create_colored_tile(t_game *game, int r, int g, int b, int size)
 	int     bpp;
 	int     size_line;
 	int     endian;
+	int		y;
+	int		x;
 
 	img = mlx_new_image(game->mlx, size, size);
 	data = mlx_get_data_addr(img, &bpp, &size_line, &endian);
-	for (int y = 0; y < size; y++)
+	y = 0;
+	while (y < size)
 	{
-		for (int x = 0; x < size; x++)
+		x = 0;
+		while (x < size)
 		{
 			int i = y * size_line + x * (bpp / 8);
 			data[i + 0] = b;
 			data[i + 1] = g;
 			data[i + 2] = r;
+			x++;
 		}
+		y++;
 	}
 	return img;
 }
@@ -29,8 +35,8 @@ void draw_ray(t_game *game)
 	float ray_y = game->player_y;
 
 	float step = 1.0;
-	int max_steps = 900000;
-	for (int i = 0; i < max_steps; i++)
+	int	i = 0;
+	while (i < MAX_DEPTH)
 	{
 		int map_x = (int)(ray_x / BLOCK_SIZE);
 		int map_y = (int)(ray_y / BLOCK_SIZE);
@@ -38,21 +44,25 @@ void draw_ray(t_game *game)
 			break;
 		if (game->map[map_y][map_x] == '1')
 			break;
-		mlx_pixel_put(game->mlx, game->window, (int)ray_x, (int)ray_y, 0xFF0000);
+		mlx_pixel_put(game->mlx, game->map_window, (int)ray_x, (int)ray_y, 0xFF0000);
 		ray_x += game->dir_x * step;
 		ray_y += game->dir_y * step;
+		i++;
 	}
 }
 
-
 void	render_map(t_game *game)
 {
-	int	i, j;
-	void *floor_img = create_colored_tile(game, 0, 0, 0, BLOCK_SIZE - 1);
-	void *wall_img = create_colored_tile(game, 0, 208, 0, BLOCK_SIZE - 1);
-	void *player_img = create_colored_tile(game, 255, 0, 0, 8);
+	int		i;
+	int		j;
+	void	*floor_img;
+	void	*wall_img;
+	void	*player_img;
 
-	mlx_clear_window(game->mlx, game->window);
+	floor_img = create_colored_tile(game, 0, 0, 0, BLOCK_SIZE - 1);
+	wall_img = create_colored_tile(game, 0, 208, 0, BLOCK_SIZE - 1);
+	player_img = create_colored_tile(game, 255, 0, 0, 8);
+	mlx_clear_window(game->mlx, game->map_window);
 	i = 0;
 	while (game->map[i])
 	{
@@ -61,19 +71,122 @@ void	render_map(t_game *game)
 		{
 			char tile = game->map[i][j];
 			if (tile == '0')
-				mlx_put_image_to_window(game->mlx, game->window, floor_img, j * BLOCK_SIZE, i * BLOCK_SIZE);
+				mlx_put_image_to_window(game->mlx, game->map_window, floor_img, j * BLOCK_SIZE, i * BLOCK_SIZE);
 			else if (tile == '1')
-				mlx_put_image_to_window(game->mlx, game->window, wall_img, j * BLOCK_SIZE, i * BLOCK_SIZE);
+				mlx_put_image_to_window(game->mlx, game->map_window, wall_img, j * BLOCK_SIZE, i * BLOCK_SIZE);
 			j++;
 		}
 		i++;
 	}
-	mlx_put_image_to_window(game->mlx, game->window, player_img, (int)game->player_x - 4, (int)game->player_y - 4);
+	mlx_put_image_to_window(game->mlx, game->map_window, player_img, (int)game->player_x - 4, (int)game->player_y - 4);
 	mlx_destroy_image(game->mlx, floor_img);
 	mlx_destroy_image(game->mlx, wall_img);
 	mlx_destroy_image(game->mlx, player_img);
-
 	draw_ray(game);
+}
+
+void clear_img_data(t_game *game, int color)
+{
+    int total_pixels;
+    int bytes_per_pixel;
+	int	i;
+
+	total_pixels = SCREEN_WIDTH * SCREEN_HEIGHT;
+    bytes_per_pixel = game->bpp / 8;
+	i = 0;
+    while (i < total_pixels * bytes_per_pixel)
+    {
+        game->img_data[i + 0] = color & 0xFF;           // blue
+        game->img_data[i + 1] = (color >> 8) & 0xFF;    // green
+        game->img_data[i + 2] = (color >> 16) & 0xFF;   // red
+		i += bytes_per_pixel;
+    }
+}
+
+void my_mlx_pixel_put(t_game *game, int x, int y, int color)
+{
+    if (x < 0 || x >= SCREEN_WIDTH || y < 0 || y >= SCREEN_HEIGHT)
+        return;
+    char *dst = game->img_data + (y * game->size_line + x * (game->bpp / 8));
+    dst[0] = color & 0xFF;
+    dst[1] = (color >> 8) & 0xFF;
+    dst[2] = (color >> 16) & 0xFF;
+}
+
+void draw_vertical_line(t_game *game, int x, int start_y, int end_y, int color)
+{
+    for (int y = start_y; y <= end_y; y++)
+        my_mlx_pixel_put(game, x, y, color);
+}
+
+
+void render_3d(t_game *game)
+{
+    int num_rays = SCREEN_WIDTH;
+	int	r;
+
+    float fov = 60.0f * (M_PI / 180.0f);
+    float start_angle = atan2(game->dir_y, game->dir_x) - fov / 2;
+    float angle_step = fov / num_rays;
+
+	//printf("=== Raycasting Debug Info ===\n");
+	//printf("Field of View: 60.0 degrees (%.4f radians)\n", fov);
+	//printf("Number of rays: %d\n", num_rays);
+	//printf("Angle step between rays: %.4f radians\n", angle_step);
+	//printf("Starting angle: %.4f radians\n", start_angle);
+	//printf("Player direction: (%.2f, %.2f)\n", game->dir_x, game->dir_y);
+	//printf("=============================\n");
+
+	clear_img_data(game, 0x000000);
+	r = 0;
+    while (r < num_rays)
+    {
+        float ray_angle = start_angle + r * angle_step;
+        float ray_dir_x = cos(ray_angle);
+        float ray_dir_y = sin(ray_angle);
+
+        float ray_x = game->player_x;
+        float ray_y = game->player_y;
+
+        float dist = 0;
+        int hit = 0;
+
+		int	i = 0;
+        while (i < MAX_DEPTH)
+        {
+            int map_x = (int)(ray_x / BLOCK_SIZE);
+            int map_y = (int)(ray_y / BLOCK_SIZE);
+
+            if (map_x < 0 || map_y < 0 || map_x >= game->max_x || map_y >= game->max_y)
+                break;
+
+            if (game->map[map_y][map_x] == '1')
+            {
+                hit = 1;
+                break;
+            }
+            ray_x += ray_dir_x;
+            ray_y += ray_dir_y;
+        }
+
+        if (hit)
+        {
+            dist = sqrt((ray_x - game->player_x) * (ray_x - game->player_x) +
+                        (ray_y - game->player_y) * (ray_y - game->player_y));
+
+            // Fix fish-eye
+            dist = dist * cos(ray_angle - atan2(game->dir_y, game->dir_x));
+
+            int wall_height = (int)(BLOCK_SIZE * SCREEN_HEIGHT / dist);
+
+            int wall_start = (SCREEN_HEIGHT - wall_height) / 2;
+            int wall_end = wall_start + wall_height;
+            draw_vertical_line(game, r, wall_start, wall_end, 0x00FF00);
+			i++;
+        }
+		r++;
+    }
+	mlx_put_image_to_window(game->mlx, game->window, game->img, 0, 0);
 }
 
 int	key_press(int keycode, t_game *game)
@@ -84,14 +197,19 @@ int	key_press(int keycode, t_game *game)
 		free_strs(game->map);
 		exit(0);
 	}
-	else if (keycode == 13 || keycode == 126)
+	else if (keycode == 13)
 		move_forward(game);
-	else if (keycode == 1 || keycode == 125)
+	else if (keycode == 1)
 		move_backward(game);
-	else if (keycode == 0 || keycode == 123)
+	else if (keycode == 123)
 		rotate_left(game);
-	else if (keycode == 2 || keycode == 124)
+	else if (keycode == 124)
 		rotate_right(game);
+	else if (keycode == 0 )
+		move_right(game);
+	else if (keycode == 2)
+		move_left(game);
+	render_3d(game);
 	render_map(game);
 	return (0);
 }
@@ -103,26 +221,6 @@ int	handle_cross(t_game *game)
 	exit(0);
 	return (0);
 }
-
-//int	mouse_move(int x, int y, t_game *game)
-//{
-//	static int last_x = -1;
-//	(void)y;
-//	if (last_x == -1)
-//		last_x = x;
-
-//	int delta_x = x - last_x;
-//	last_x = x;
-
-//	float angle = delta_x * 0.003f;
-
-//	float old_dir_x = game->dir_x;
-//	game->dir_x = game->dir_x * cos(angle) - game->dir_y * sin(angle);
-//	game->dir_y = old_dir_x * sin(angle) + game->dir_y * cos(angle);
-
-//	render_map(game);
-//	return (0);
-//}
 
 int main(int ac, char **av)
 {
@@ -136,13 +234,23 @@ int main(int ac, char **av)
 	if (!game.map)
 		return (1);
 	get_map_info(&game);
-	game.window = mlx_new_window(game.mlx, game.max_x * BLOCK_SIZE, game.max_y * BLOCK_SIZE, "Cub3D");
+
+	game.window = mlx_new_window(game.mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3D");
 	if (!game.window)
 		return (1);
+
+	game.map_window = mlx_new_window(game.mlx, game.max_x * BLOCK_SIZE, game.max_y * BLOCK_SIZE, "Map");
+	if (!game.map_window)
+		return (1);
+	
+	game.img = mlx_new_image(game.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+	game.img_data = mlx_get_data_addr(game.img, &game.bpp, &game.size_line, &game.endian);
+
+	render_3d(&game);
 	render_map(&game);
+
 	mlx_hook(game.window, 2, 0, key_press, &game);
 	mlx_hook(game.window, 17, 0, handle_cross, &game);
-	//mlx_hook(game.window, 6, 0, mouse_move, &game);
 	mlx_loop(game.mlx);
 	return (0);
 }
