@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/09 14:03:18 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/08/11 16:14:33 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,11 @@
 # endif
 
 # ifndef SPEED
-#  define SPEED 6
+#  define SPEED 5
 # endif
 
 # ifndef ROT_SPEED
 #  define ROT_SPEED 0.1
-# endif
-
-# ifndef MAX_DEPTH
-#  define MAX_DEPTH 1000
 # endif
 
 # ifndef SCREEN_WIDTH
@@ -48,7 +44,6 @@ typedef struct s_game
 {
 	void	*mlx;
 	void	*window;
-	void	*map_window;
 	char	**map;
 	float	player_y;
 	float	player_x;
@@ -65,6 +60,9 @@ typedef struct s_game
     int     endian;  
 }			t_game;
 
+char	**input(char **av);
+void	get_map_info(t_game *game);
+
 // moves :
 void	move_forward(t_game *game);
 void	move_backward(t_game *game);
@@ -72,11 +70,9 @@ void	move_right(t_game *game);
 void	move_left(t_game *game);
 void	rotate_left(t_game *game);
 void	rotate_right(t_game *game);
-char	**input(char **av);
-char	*get_next_line(int fd);
-void	get_map_info(t_game *game);
 
 // utils :
+char	*get_next_line(int fd);
 char	*ft_strdup(const char *s1);
 void	free_strs(char **strs);
 char	*ft_strjoin(char const *s1, char const *s2);

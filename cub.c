@@ -26,17 +26,17 @@ void *create_colored_tile(t_game *game, int r, int g, int b, int size)
 		}
 		y++;
 	}
-	return img;
+	return (img);
 }
 
-void draw_ray(t_game *game)
+void draw_ray(t_game *game, float scale)
 {
 	float ray_x = game->player_x;
 	float ray_y = game->player_y;
 
-	float step = 1.0;
+
 	int	i = 0;
-	while (i < MAX_DEPTH)
+	while (i < 50)
 	{
 		int map_x = (int)(ray_x / BLOCK_SIZE);
 		int map_y = (int)(ray_y / BLOCK_SIZE);
@@ -44,9 +44,9 @@ void draw_ray(t_game *game)
 			break;
 		if (game->map[map_y][map_x] == '1')
 			break;
-		mlx_pixel_put(game->mlx, game->map_window, (int)ray_x, (int)ray_y, 0xFF0000);
-		ray_x += game->dir_x * step;
-		ray_y += game->dir_y * step;
+		mlx_pixel_put(game->mlx, game->window, (int)(ray_x * scale), (int)(ray_y * scale), 0xFF0000);
+		ray_x += game->dir_x;
+		ray_y += game->dir_y;
 		i++;
 	}
 }
@@ -58,11 +58,13 @@ void	render_map(t_game *game)
 	void	*floor_img;
 	void	*wall_img;
 	void	*player_img;
+	float	scale;
 
-	floor_img = create_colored_tile(game, 0, 0, 0, BLOCK_SIZE - 1);
-	wall_img = create_colored_tile(game, 0, 208, 0, BLOCK_SIZE - 1);
-	player_img = create_colored_tile(game, 255, 0, 0, 8);
-	mlx_clear_window(game->mlx, game->map_window);
+	scale = 8.0 / BLOCK_SIZE;
+
+	floor_img = create_colored_tile(game, 0, 0, 0, 8);
+	wall_img = create_colored_tile(game, 0, 208, 0, 8);
+	player_img = create_colored_tile(game, 255, 0, 0, 3);
 	i = 0;
 	while (game->map[i])
 	{
@@ -71,18 +73,22 @@ void	render_map(t_game *game)
 		{
 			char tile = game->map[i][j];
 			if (tile == '0')
-				mlx_put_image_to_window(game->mlx, game->map_window, floor_img, j * BLOCK_SIZE, i * BLOCK_SIZE);
-			else if (tile == '1')
-				mlx_put_image_to_window(game->mlx, game->map_window, wall_img, j * BLOCK_SIZE, i * BLOCK_SIZE);
+				mlx_put_image_to_window(game->mlx, game->window, floor_img, j * 8, i * 8);
+			if (tile == '1')
+				mlx_put_image_to_window(game->mlx, game->window, wall_img, j * 8, i * 8);
 			j++;
 		}
 		i++;
 	}
-	mlx_put_image_to_window(game->mlx, game->map_window, player_img, (int)game->player_x - 4, (int)game->player_y - 4);
+
+	int player_minimap_x = (int)(game->player_x * scale) - 1;
+	int player_minimap_y = (int)(game->player_y * scale);
+
+	mlx_put_image_to_window(game->mlx, game->window, player_img, player_minimap_x, player_minimap_y);
 	mlx_destroy_image(game->mlx, floor_img);
 	mlx_destroy_image(game->mlx, wall_img);
 	mlx_destroy_image(game->mlx, player_img);
-	draw_ray(game);
+	draw_ray(game, scale);
 }
 
 void clear_img_data(t_game *game, int color)
@@ -96,9 +102,9 @@ void clear_img_data(t_game *game, int color)
 	i = 0;
     while (i < total_pixels * bytes_per_pixel)
     {
-        game->img_data[i + 0] = color & 0xFF;           // blue
-        game->img_data[i + 1] = (color >> 8) & 0xFF;    // green
-        game->img_data[i + 2] = (color >> 16) & 0xFF;   // red
+        game->img_data[i + 0] = color & 0xFF;
+        game->img_data[i + 1] = (color >> 8) & 0xFF;
+        game->img_data[i + 2] = (color >> 16) & 0xFF;
 		i += bytes_per_pixel;
     }
 }
@@ -119,29 +125,21 @@ void draw_vertical_line(t_game *game, int x, int start_y, int end_y, int color)
         my_mlx_pixel_put(game, x, y, color);
 }
 
-
 void render_3d(t_game *game)
 {
     int num_rays = SCREEN_WIDTH;
 	int	r;
 
-    float fov = 60.0f * (M_PI / 180.0f);
+    float fov = 60.0 / 180 * M_PI;
     float start_angle = atan2(game->dir_y, game->dir_x) - fov / 2;
     float angle_step = fov / num_rays;
-
-	//printf("=== Raycasting Debug Info ===\n");
-	//printf("Field of View: 60.0 degrees (%.4f radians)\n", fov);
-	//printf("Number of rays: %d\n", num_rays);
-	//printf("Angle step between rays: %.4f radians\n", angle_step);
-	//printf("Starting angle: %.4f radians\n", start_angle);
-	//printf("Player direction: (%.2f, %.2f)\n", game->dir_x, game->dir_y);
-	//printf("=============================\n");
 
 	clear_img_data(game, 0x000000);
 	r = 0;
     while (r < num_rays)
     {
         float ray_angle = start_angle + r * angle_step;
+
         float ray_dir_x = cos(ray_angle);
         float ray_dir_y = sin(ray_angle);
 
@@ -152,7 +150,7 @@ void render_3d(t_game *game)
         int hit = 0;
 
 		int	i = 0;
-        while (i < MAX_DEPTH)
+        while (1)
         {
             int map_x = (int)(ray_x / BLOCK_SIZE);
             int map_y = (int)(ray_y / BLOCK_SIZE);
@@ -174,9 +172,6 @@ void render_3d(t_game *game)
             dist = sqrt((ray_x - game->player_x) * (ray_x - game->player_x) +
                         (ray_y - game->player_y) * (ray_y - game->player_y));
 
-            // Fix fish-eye
-            dist = dist * cos(ray_angle - atan2(game->dir_y, game->dir_x));
-
             int wall_height = (int)(BLOCK_SIZE * SCREEN_HEIGHT / dist);
 
             int wall_start = (SCREEN_HEIGHT - wall_height) / 2;
@@ -187,6 +182,7 @@ void render_3d(t_game *game)
 		r++;
     }
 	mlx_put_image_to_window(game->mlx, game->window, game->img, 0, 0);
+	render_map(game);
 }
 
 int	key_press(int keycode, t_game *game)
@@ -210,7 +206,6 @@ int	key_press(int keycode, t_game *game)
 	else if (keycode == 2)
 		move_left(game);
 	render_3d(game);
-	render_map(game);
 	return (0);
 }
 
@@ -238,16 +233,11 @@ int main(int ac, char **av)
 	game.window = mlx_new_window(game.mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3D");
 	if (!game.window)
 		return (1);
-
-	game.map_window = mlx_new_window(game.mlx, game.max_x * BLOCK_SIZE, game.max_y * BLOCK_SIZE, "Map");
-	if (!game.map_window)
-		return (1);
 	
 	game.img = mlx_new_image(game.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	game.img_data = mlx_get_data_addr(game.img, &game.bpp, &game.size_line, &game.endian);
 
 	render_3d(&game);
-	render_map(&game);
 
 	mlx_hook(game.window, 2, 0, key_press, &game);
 	mlx_hook(game.window, 17, 0, handle_cross, &game);

@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 18:18:37 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/09 13:52:27 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/08/11 11:48:37 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ void	move_backward(t_game *game)
 
 void move_right(t_game *game)
 {
-    float new_x = game->player_x + game->dir_y * (SPEED / 2);
-    float new_y = game->player_y - game->dir_x * (SPEED / 2);
+    float new_x = game->player_x + game->dir_y * SPEED;
+    float new_y = game->player_y - game->dir_x * SPEED;
 
     int map_x = (int)(new_x) / BLOCK_SIZE;
     int map_y = (int)(new_y) / BLOCK_SIZE;
