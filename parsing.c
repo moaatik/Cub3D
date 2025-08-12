@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 09:51:19 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/12 15:33:49 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/08/12 16:21:30 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ int	check_file(char *file)
 	if (ft_strcmp(file + len - 4, ".cub"))
 		return (-1);
 	fd = open(file, O_RDONLY);
-	if (fd == -1)
-		return (-1);
 	return (fd);
 }
 
@@ -55,7 +53,7 @@ char	**input(char **av)
 	char	**splitted_map;
 
 	if (!av || !av[1])
-		return (NULL);
+		return (write(2, "Error\nNo config file found\n", 27), NULL);
 	fd = check_file(av[1]);
 	if (fd < 0)
 		return (write(2, "Error\nwhile opening the file\n", 29), NULL);
@@ -87,32 +85,32 @@ void	get_map_info(t_game *game)
 		{
 			if (game->map[y][x] == 'N' || game->map[y][x] == 'S' 
 			|| game->map[y][x] == 'W' || game->map[y][x] == 'E')
-		{
-			game->player_y = y * BLOCK_SIZE + BLOCK_SIZE / 2;
-			game->player_x = x * BLOCK_SIZE + BLOCK_SIZE / 2;
+			{
+				game->player_y = y * BLOCK_SIZE + BLOCK_SIZE / 2;
+				game->player_x = x * BLOCK_SIZE + BLOCK_SIZE / 2;
 
-			if (game->map[y][x] == 'N')
-			{
-				game->dir_x = 0;
-				game->dir_y = -1;
+				if (game->map[y][x] == 'N')
+				{
+					game->dir_x = 0;
+					game->dir_y = -1;
+				}
+				else if (game->map[y][x] == 'S')
+				{
+					game->dir_x = 0;
+					game->dir_y = 1;
+				}
+				else if (game->map[y][x] == 'W')
+				{
+					game->dir_x = -1;
+					game->dir_y = 0;
+				}
+				else if (game->map[y][x] == 'E')
+				{
+					game->dir_x = 1;
+					game->dir_y = 0;
+				}
+				game->map[y][x] = '0';
 			}
-			else if (game->map[y][x] == 'S')
-			{
-				game->dir_x = 0;
-				game->dir_y = 1;
-			}
-			else if (game->map[y][x] == 'W')
-			{
-				game->dir_x = -1;
-				game->dir_y = 0;
-			}
-			else if (game->map[y][x] == 'E')
-			{
-				game->dir_x = 1;
-				game->dir_y = 0;
-			}
-			game->map[y][x] = '0';
-		}
 			x++;
 		}
 		if (x > max_width)
