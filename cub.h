@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/11 16:14:33 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/08/12 16:03:17 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,15 @@
 #  define SCREEN_HEIGHT 600
 # endif
 
+typedef struct s_ray
+{
+    float	angle;
+    float	dir_x;
+    float	dir_y;
+    float	x;
+    float	y;
+}	t_ray;
+
 typedef struct s_game
 {
 	void	*mlx;
@@ -53,11 +62,14 @@ typedef struct s_game
 	int		max_x;
 	int		max_y;
 
-	void    *img;          // mlx image pointer (framebuffer)
-    char    *img_data;     // raw pixel data pointer
-    int     bpp;           // bits per pixel
-    int     size_line;     // bytes per line
-    int     endian;  
+	void    *img;
+    char    *img_data;
+    int     bpp;
+    int     size_line;
+    int     endian;
+
+	int		ceiling_color;
+	int		floor_color;
 }			t_game;
 
 char	**input(char **av);
