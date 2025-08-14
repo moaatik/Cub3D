@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:57:56 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/12 19:06:21 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/08/14 15:04:21 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,16 @@ static void	draw_wall_slice(t_game *game, t_ray *ray, int ray_index)
 	int		wall_start;
 	int		wall_end;
 
+	//mobarhanat Pythagoras to get ray actual distanst
 	dist = sqrt((ray->x - game->player_x) * (ray->x - game->player_x)
 			+ (ray->y - game->player_y) * (ray->y - game->player_y));
+	//fix 3in l7ota
+    dist *= game->dir_x * ray->dir_x + game->dir_y * ray->dir_y;
+
 	wall_height = (int)(BLOCK_SIZE * SCREEN_HEIGHT / dist);
 	wall_start = (SCREEN_HEIGHT - wall_height) / 2;
 	wall_end = wall_start + wall_height;
-	draw_vertical_line(game, ray_index, wall_start, wall_end, 0x005000);
+	draw_vertical_line(game, ray_index, wall_start, wall_end, 0x003000);
 }
 
 void	render_game(t_game *game)

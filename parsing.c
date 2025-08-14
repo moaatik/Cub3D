@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 09:51:19 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/12 16:21:30 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/08/13 15:40:00 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,5 @@ void	get_map_info(t_game *game)
 	game->max_y = y;
 	game->max_x = max_width;
 	game->ceiling_color = 0x00FFFF;
-	game->floor_color = 0xFF8C00;
+	game->floor_color = 0xFFFFFF;
 }

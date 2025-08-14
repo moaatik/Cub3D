@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:02 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/12 17:17:52 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/08/14 15:19:45 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ int	key_press(int keycode, t_game *game)
 	else if (keycode == 1)
 		move_backward(game);
 	else if (keycode == 123)
-		rotate_left(game);
+		rotate(game, 0);
 	else if (keycode == 124)
-		rotate_right(game);
-	else if (keycode == 0 )
+		rotate(game, 1);
+	else if (keycode == 0)
 		move_right(game);
 	else if (keycode == 2)
 		move_left(game);

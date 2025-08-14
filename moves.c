@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 18:18:37 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/12 16:06:01 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/08/14 15:19:34 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,36 +109,26 @@ void move_left(t_game *game)
     }
 }
 
-void	rotate_left(t_game *game)
+void	rotate(t_game *game, int dir)
 {
 	float	old_dir_x;
-	float	angle;
-	float	sin_angle;
-	float	cos_angle;
+	float	old_dir_y;
+	float	rot_speed;
 
 	old_dir_x = game->dir_x;
-	angle = -ROT_SPEED;
+	old_dir_y = game->dir_y;
 
-	sin_angle = sin(angle);
-	cos_angle = cos(angle);
-
-	game->dir_x = game->dir_x * cos_angle - game->dir_y * sin_angle;
-	game->dir_y = old_dir_x * sin_angle + game->dir_y * cos_angle;
-}
-
-void	rotate_right(t_game *game)
-{
-	float	old_dir_x;
-	float	angle;
-	float	sin_angle;
-	float	cos_angle;
-
-	old_dir_x = game->dir_x;
-	angle = ROT_SPEED;
-
-	sin_angle = sin(angle);
-	cos_angle = cos(angle);
-
-	game->dir_x = game->dir_x * cos_angle - game->dir_y * sin_angle;
-	game->dir_y = old_dir_x * sin_angle + game->dir_y * cos_angle;
+	rot_speed = ROT_SPEED;
+	if (!dir)
+		rot_speed = -rot_speed;
+	game->dir_x = old_dir_x - old_dir_y * rot_speed;
+	game->dir_y = old_dir_x * rot_speed + old_dir_y;
+	if (game->dir_x > 1)
+		game->dir_x = 1;
+	if (game->dir_x < -1)
+		game->dir_x = -1;
+	if (game->dir_y > 1)
+		game->dir_y = 1;
+	if (game->dir_y < -1)
+		game->dir_y = -1;
 }
