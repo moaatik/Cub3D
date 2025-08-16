@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:57:56 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/14 15:04:21 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/08/16 17:51:39 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,22 @@ void	draw_background(t_game *game)
 	}
 }
 
-static void	init_ray(t_game *game, int ray_index, float start_angle, float angle_step, t_ray *ray)
+void	init_ray(t_game *game, int ray_index, float start_angle, float angle_step, t_ray *ray)
 {
 	ray->angle = start_angle + ray_index * angle_step;
 	ray->dir_x = cos(ray->angle);
 	ray->dir_y = sin(ray->angle);
+	//printf("ray angle : %f | cos : %f | sin : %f\n", ray->angle, ray->dir_x, ray->dir_y);
 	ray->x = game->player_x;
 	ray->y = game->player_y;
 }
 
-static int	cast_ray(t_game *game, t_ray *ray)
+int	cast_ray(t_game *game, t_ray *ray, int ray_index)
 {
 	int	map_x;
 	int	map_y;
 
+	(void)ray_index;
 	while (1)
 	{
 		map_x = (int)(ray->x / (BLOCK_SIZE));
@@ -56,13 +58,22 @@ static int	cast_ray(t_game *game, t_ray *ray)
 		if (map_x < 0 || map_y < 0 || map_x >= game->max_x || map_y >= game->max_y)
 			return (0);
 		if (game->map[map_y][map_x] == '1')
+		{
+			ray->hit_x = ray->x;
+			ray->hit_y = ray->y;
+			if (fabs(ray->dir_x) > fabs(ray->dir_y))
+				ray->side = 0; // V
+			else
+				ray->side = 1; // H
+			//printf("ray side : %d of ray number %d\n", ray->side, ray_index);
 			return (1);
+		}
 		ray->x += ray->dir_x;
 		ray->y += ray->dir_y;
 	}
 }
 
-static void	draw_wall_slice(t_game *game, t_ray *ray, int ray_index)
+void	draw_wall_slice(t_game *game, t_ray *ray, int ray_index)
 {
 	float	dist;
 	int		wall_height;
@@ -97,7 +108,7 @@ void	render_game(t_game *game)
 	while (ray_index < SCREEN_WIDTH)
 	{
 		init_ray(game, ray_index, start_angle, angle_step, &ray);
-		if (cast_ray(game, &ray))
+		if (cast_ray(game, &ray, ray_index))
 			draw_wall_slice(game, &ray, ray_index);
 		ray_index++;
 	}

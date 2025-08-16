@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:02 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/14 15:19:45 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/08/14 16:51:28 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,22 @@ int	key_press(int keycode, t_game *game)
 	return (0);
 }
 
+int	init(t_game *game)
+{
+	int	img_height;
+	int	img_width;
+
+	game->n_wall = mlx_xpm_file_to_image(game->mlx, \
+		"textures/wood.xpm", &img_width, &img_height);
+	game->s_wall = mlx_xpm_file_to_image(game->mlx, \
+		"textures/red_brick.xpm", &img_width, &img_height);
+	game->e_wall = mlx_xpm_file_to_image(game->mlx, \
+		"textures/grey_stone.xpm", &img_width, &img_height);
+	game->w_wall = mlx_xpm_file_to_image(game->mlx, \
+		"textures/blue_stone.xpm", &img_width, &img_height);
+	return (0);
+}
+
 int main(int ac, char **av)
 {
 	t_game	game;
@@ -56,6 +72,10 @@ int main(int ac, char **av)
 	game.mlx = mlx_init();
 	if (!game.mlx)
 		return (1);
+
+	if (init(&game))
+		return (1);
+
 
 	get_map_info(&game);
 

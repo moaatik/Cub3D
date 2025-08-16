@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/14 15:21:16 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/08/14 17:14:29 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,19 @@ typedef struct s_ray
     float	dir_y;
     float	x;
     float	y;
+	float	hit_x;
+    float	hit_y;
+	int		side;
 }	t_ray;
 
 typedef struct s_game
 {
 	void	*mlx;
 	void	*window;
+	void	*n_wall;
+	void	*s_wall;
+	void	*e_wall;
+	void	*w_wall;
 	char	**map;
 	float	player_y;
 	float	player_x;
