@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 17:00:06 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/12 19:01:33 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/08/16 18:48:58 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void my_mlx_pixel_put(t_game *game, int x, int y, int color)
 
 void draw_vertical_line(t_game *game, int x, int start_y, int end_y, int color)
 {
-    for (int y = start_y; y <= end_y; y++)
-        my_mlx_pixel_put(game, x, y, color);
+    while (start_y <= end_y)
+        my_mlx_pixel_put(game, x, start_y++, color);
 }
 
 void *create_colored_tile(t_game *game, int r, int g, int b, int size)

@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:57:56 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/16 17:51:39 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/08/16 18:45:37 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ int	cast_ray(t_game *game, t_ray *ray, int ray_index)
 	(void)ray_index;
 	while (1)
 	{
-		map_x = (int)(ray->x / (BLOCK_SIZE));
-		map_y = (int)(ray->y / (BLOCK_SIZE));
+		map_x = (int)(ray->x / BLOCK_SIZE);
+		map_y = (int)(ray->y / BLOCK_SIZE);
 		if (map_x < 0 || map_y < 0 || map_x >= game->max_x || map_y >= game->max_y)
 			return (0);
 		if (game->map[map_y][map_x] == '1')
