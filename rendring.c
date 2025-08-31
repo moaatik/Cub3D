@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:57:56 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/16 18:45:37 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/08/31 18:51:15 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,7 @@ int	cast_ray(t_game *game, t_ray *ray, int ray_index)
 		if (map_x < 0 || map_y < 0 || map_x >= game->max_x || map_y >= game->max_y)
 			return (0);
 		if (game->map[map_y][map_x] == '1')
-		{
-			ray->hit_x = ray->x;
-			ray->hit_y = ray->y;
-			if (fabs(ray->dir_x) > fabs(ray->dir_y))
-				ray->side = 0; // V
-			else
-				ray->side = 1; // H
-			//printf("ray side : %d of ray number %d\n", ray->side, ray_index);
 			return (1);
-		}
 		ray->x += ray->dir_x;
 		ray->y += ray->dir_y;
 	}

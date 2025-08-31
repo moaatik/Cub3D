@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/14 17:14:29 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/08/31 18:03:57 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # endif
 
 # ifndef SCREEN_WIDTH
-#  define SCREEN_WIDTH 800
+#  define SCREEN_WIDTH 1200
 # endif
 
 # ifndef SCREEN_HEIGHT
@@ -47,9 +47,6 @@ typedef struct s_ray
     float	dir_y;
     float	x;
     float	y;
-	float	hit_x;
-    float	hit_y;
-	int		side;
 }	t_ray;
 
 typedef struct s_game
