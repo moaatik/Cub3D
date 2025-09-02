@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:57:56 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/02 15:18:18 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/09/02 18:08:43 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ unsigned int get_texture_color(t_texture *texture, int x, int y)
 	if (x < 0 || y < 0 || x >= texture->width || y >= texture->height)
 		return (0);
 	
-	pixel = texture->addr + (y * texture->size_line + x * (texture->bpp / 8));
+	pixel = texture->address + (y * texture->size_line + x * (texture->bpp / 8));
 	return (*(unsigned int*)pixel);
 }
 
@@ -55,7 +55,7 @@ void put_pixel_to_image(t_game *game, int x, int y, unsigned int color)
 {
 	void	*pixel;
 
-	pixel = game->img_data + (y * game->size_line + x * (game->bpp / 8));
+	pixel = game->address + (y * game->size_line + x * (game->bpp / 8));
 	*(unsigned int*)pixel = color;
 }
 
@@ -123,7 +123,7 @@ int calculate_texture_x(t_ray *ray, t_texture *texture)
 	dy = ray->y - (map_y * BLOCK_SIZE + BLOCK_SIZE / 2);
 	
 	if (fabs(dx) > fabs(dy)) // east || west
-		wall_hit_point = fmod(ray->y, BLOCK_SIZE); // bansaba l wall fin drab ray (axman index f dak l wall)
+		wall_hit_point = fmod(ray->y, BLOCK_SIZE); // bansaba l wall fin drab ray (axman index f dak l wall) matalan ray kan 330 w BS 100 330 % 100 = 30
 	else // north || south
 		wall_hit_point = fmod(ray->x, BLOCK_SIZE);
 	

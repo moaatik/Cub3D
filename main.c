@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:02 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/02 16:12:59 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/09/02 17:11:43 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	key_press(int keycode, t_game *game)
 void load_texture(t_game *game, t_texture *texture, char *path)
 {
     texture->img = mlx_xpm_file_to_image(game->mlx, path, &texture->width, &texture->height);
-    texture->addr = mlx_get_data_addr(texture->img, &texture->bpp, &texture->size_line, &texture->endian);
+    texture->address = mlx_get_data_addr(texture->img, &texture->bpp, &texture->size_line, &texture->endian);
 }
 
 int	init(t_game *game)
@@ -91,8 +91,8 @@ int main(int ac, char **av)
 	if (!game.img)
 		return (1);
 
-	game.img_data = mlx_get_data_addr(game.img, &game.bpp, &game.size_line, &game.endian);
-	if (!game.img_data)
+	game.address = mlx_get_data_addr(game.img, &game.bpp, &game.size_line, &game.endian);
+	if (!game.address)
 		return (1);
 
 	render_game(&game);

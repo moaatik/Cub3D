@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/02 00:21:27 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/09/02 18:09:15 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,17 @@
 # endif
 
 # ifndef SCREEN_WIDTH
-#  define SCREEN_WIDTH 1200
+#  define SCREEN_WIDTH 2000
 # endif
 
 # ifndef SCREEN_HEIGHT
-#  define SCREEN_HEIGHT 600
+#  define SCREEN_HEIGHT 1000
 # endif
 
 typedef struct s_texture
 {
     void    *img;
-    char    *addr;
+    char    *address;
     int     width;
     int     height;
     int     bpp;
@@ -93,7 +93,7 @@ typedef struct	s_game
 
 	
 	void    	*img;
-    char    	*img_data;
+    char    	*address;
     int     	bpp;
     int     	size_line;
     int     	endian;
