@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:02 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/02 15:57:50 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/09/02 16:12:59 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	init(t_game *game)
 	load_texture(game, &game->n_wall, "textures/SKSPINE1.xpm");
 	load_texture(game, &game->s_wall, "textures/MARBFAC3.xpm");
 	load_texture(game, &game->e_wall, "textures/SKULWAL3.xpm");
-	load_texture(game, &game->w_wall, "textures/WALL.xpm");
+	load_texture(game, &game->w_wall, "textures/STONGARG.xpm");
 	game->ceiling_color = 0x780010;
 	game->floor_color = 0x002000;
 	return (0);
