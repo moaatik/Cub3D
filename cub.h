@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/31 18:03:57 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/09/02 00:21:27 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@
 # include <math.h>
 
 # ifndef BLOCK_SIZE
-#  define BLOCK_SIZE 300
+#  define BLOCK_SIZE 64
 # endif
 
 # ifndef SPEED
-#  define SPEED 50
+#  define SPEED 7
 # endif
 
 # ifndef ROT_SPEED
@@ -40,6 +40,17 @@
 #  define SCREEN_HEIGHT 600
 # endif
 
+typedef struct s_texture
+{
+    void    *img;
+    char    *addr;
+    int     width;
+    int     height;
+    int     bpp;
+    int     size_line;
+    int     endian;
+}  			t_texture;
+
 typedef struct s_ray
 {
     float	angle;
@@ -47,45 +58,56 @@ typedef struct s_ray
     float	dir_y;
     float	x;
     float	y;
-}	t_ray;
+}			t_ray;
 
-typedef struct s_game
+typedef struct s_wall
 {
-	void	*mlx;
-	void	*window;
-	void	*n_wall;
-	void	*s_wall;
-	void	*e_wall;
-	void	*w_wall;
-	char	**map;
-	float	player_y;
-	float	player_x;
-	float	dir_y;
-	float	dir_x;
-	float	rot_speed;
-	int		max_x;
-	int		max_y;
+    int height;
+    int start;
+    int end;
+}	    t_wall;
 
-	void    *img;
-    char    *img_data;
-    int     bpp;
-    int     size_line;
-    int     endian;
+typedef struct s_player
+{
+    float   y;
+	float   x;
+	float   dir_y;
+	float   dir_x;
+	float   rot_speed;
+}           t_player;
 
-	int		ceiling_color;
-	int		floor_color;
-}			t_game;
+typedef struct	s_game
+{
+	void		*mlx;
+	void		*window;
+	t_texture   n_wall;
+	t_texture	s_wall;
+	t_texture	e_wall;
+	t_texture	w_wall;
+
+    t_player    player;
+	
+	char		**map;
+	int			max_x;
+	int			max_y;
+
+	
+	void    	*img;
+    char    	*img_data;
+    int     	bpp;
+    int     	size_line;
+    int     	endian;
+	
+	int			ceiling_color;
+	int			floor_color;
+}				t_game;
 
 //parser
 char	**input(char **av);
 void	get_map_info(t_game *game);
 
 //rander
-void	render_map(t_game *game);
 void	render_game(t_game *game);
-void	my_mlx_pixel_put(t_game *game, int x, int y, int color);
-void	*create_colored_tile(t_game *game, int r, int g, int b, int size);
-void	draw_vertical_line(t_game *game, int x, int start_y, int end_y, int color);
 
 // moves :
 void	move_left(t_game *game);

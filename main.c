@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:02 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/16 18:33:12 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/09/02 14:29:05 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@ int	ft_exit(t_game *game)
 {
 	mlx_destroy_window(game->mlx, game->window);
 	mlx_destroy_image(game->mlx, game->img);
+	mlx_destroy_image(game->mlx, game->n_wall.img);
+	mlx_destroy_image(game->mlx, game->s_wall.img);
+	mlx_destroy_image(game->mlx, game->e_wall.img);
+	mlx_destroy_image(game->mlx, game->w_wall.img);
 	free_strs(game->map);
 	exit(0);
 	return (0);
@@ -43,19 +47,20 @@ int	key_press(int keycode, t_game *game)
 	return (0);
 }
 
+void load_texture(t_game *game, t_texture *texture, char *path)
+{
+    texture->img = mlx_xpm_file_to_image(game->mlx, path, &texture->width, &texture->height);
+    texture->addr = mlx_get_data_addr(texture->img, &texture->bpp, &texture->size_line, &texture->endian);
+}
+
 int	init(t_game *game)
 {
-	int	img_height;
-	int	img_width;
-
-	game->n_wall = mlx_xpm_file_to_image(game->mlx, \
-		"textures/wood.xpm", &img_width, &img_height);
-	game->s_wall = mlx_xpm_file_to_image(game->mlx, \
-		"textures/red_brick.xpm", &img_width, &img_height);
-	game->e_wall = mlx_xpm_file_to_image(game->mlx, \
-		"textures/grey_stone.xpm", &img_width, &img_height);
-	game->w_wall = mlx_xpm_file_to_image(game->mlx, \
-		"textures/blue_stone.xpm", &img_width, &img_height);
+	load_texture(game, &game->n_wall, "textures/red_brick.xpm");
+	load_texture(game, &game->s_wall, "textures/mossy.xpm");
+	load_texture(game, &game->e_wall, "textures/eagle.xpm");
+	load_texture(game, &game->w_wall, "textures/grey_stone.xpm");
+	game->ceiling_color = 0x00FFFF;
+	game->floor_color = 0xFFFFFF;
 	return (0);
 }
 
@@ -75,7 +80,6 @@ int main(int ac, char **av)
 
 	if (init(&game))
 		return (1);
-
 
 	get_map_info(&game);
 

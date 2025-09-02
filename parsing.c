@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 09:51:19 by moaatik           #+#    #+#             */
-/*   Updated: 2025/08/30 10:23:26 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/09/02 14:23:32 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,28 +86,28 @@ void	get_map_info(t_game *game)
 			if (game->map[y][x] == 'N' || game->map[y][x] == 'S' 
 			|| game->map[y][x] == 'W' || game->map[y][x] == 'E')
 			{
-				game->player_y = y * BLOCK_SIZE + BLOCK_SIZE / 2;
-				game->player_x = x * BLOCK_SIZE + BLOCK_SIZE / 2;
+				game->player.y = y * BLOCK_SIZE + BLOCK_SIZE / 2;
+				game->player.x = x * BLOCK_SIZE + BLOCK_SIZE / 2;
 
 				if (game->map[y][x] == 'N')
 				{
-					game->dir_x = 0;
-					game->dir_y = -1;
+					game->player.dir_x = 0;
+					game->player.dir_y = -1;
 				}
 				else if (game->map[y][x] == 'S')
 				{
-					game->dir_x = 0;
-					game->dir_y = 1;
+					game->player.dir_x = 0;
+					game->player.dir_y = 1;
 				}
 				else if (game->map[y][x] == 'W')
 				{
-					game->dir_x = -1;
-					game->dir_y = 0;
+					game->player.dir_x = -1;
+					game->player.dir_y = 0;
 				}
 				else if (game->map[y][x] == 'E')
 				{
-					game->dir_x = 1;
-					game->dir_y = 0;
+					game->player.dir_x = 1;
+					game->player.dir_y = 0;
 				}
 				game->map[y][x] = '0';
 			}
@@ -119,6 +119,4 @@ void	get_map_info(t_game *game)
 	}
 	game->max_y = y;
 	game->max_x = max_width;
-	game->ceiling_color = 0x00FFFF;
-	game->floor_color = 0xFFFFFF;
 }
