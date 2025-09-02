@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:02 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/02 14:29:05 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/09/02 15:57:50 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ void load_texture(t_game *game, t_texture *texture, char *path)
 
 int	init(t_game *game)
 {
-	load_texture(game, &game->n_wall, "textures/red_brick.xpm");
-	load_texture(game, &game->s_wall, "textures/mossy.xpm");
-	load_texture(game, &game->e_wall, "textures/eagle.xpm");
-	load_texture(game, &game->w_wall, "textures/grey_stone.xpm");
-	game->ceiling_color = 0x00FFFF;
-	game->floor_color = 0xFFFFFF;
+	load_texture(game, &game->n_wall, "textures/SKSPINE1.xpm");
+	load_texture(game, &game->s_wall, "textures/MARBFAC3.xpm");
+	load_texture(game, &game->e_wall, "textures/SKULWAL3.xpm");
+	load_texture(game, &game->w_wall, "textures/WALL.xpm");
+	game->ceiling_color = 0x780010;
+	game->floor_color = 0x002000;
 	return (0);
 }
 
