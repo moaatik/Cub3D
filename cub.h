@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/02 18:09:15 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/09/07 06:54:12 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,34 +42,46 @@
 
 typedef struct s_texture
 {
-    void    *img;
-    char    *address;
-    int     width;
-    int     height;
-    int     bpp;
-    int     size_line;
-    int     endian;
+	void    *img;
+	char    *address;
+	int     width;
+	int     height;
+	int     bpp;
+	int     size_line;
+	int     endian;
 }  			t_texture;
+
+typedef struct s_cast
+{
+	int     map_x;
+	int     map_y;
+	int     step_x;
+	int     step_y;
+	float	delta_dist_x;
+	float	delta_dist_y;
+	float	side_dist_x;
+	float	side_dist_y;
+}  			t_cast;
 
 typedef struct s_ray
 {
-    float	angle;
-    float	dir_x;
-    float	dir_y;
-    float	x;
-    float	y;
+	float	angle;
+	float	dir_x;
+	float	dir_y;
+	float	x;
+	float	y;
 }			t_ray;
 
 typedef struct s_wall
 {
-    int height;
-    int start;
-    int end;
+	int height;
+	int start;
+	int end;
 }	    t_wall;
 
 typedef struct s_player
 {
-    float   y;
+	float   y;
 	float   x;
 	float   dir_y;
 	float   dir_x;
@@ -85,7 +97,7 @@ typedef struct	s_game
 	t_texture	e_wall;
 	t_texture	w_wall;
 
-    t_player    player;
+	t_player    player;
 	
 	char		**map;
 	int			max_x;
@@ -93,10 +105,10 @@ typedef struct	s_game
 
 	
 	void    	*img;
-    char    	*address;
-    int     	bpp;
-    int     	size_line;
-    int     	endian;
+	char    	*address;
+	int     	bpp;
+	int     	size_line;
+	int     	endian;
 	
 	int			ceiling_color;
 	int			floor_color;

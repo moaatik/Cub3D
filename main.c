@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:02 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/02 17:11:43 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/09/08 10:12:45 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void load_texture(t_game *game, t_texture *texture, char *path)
 
 int	init(t_game *game)
 {
-	load_texture(game, &game->n_wall, "textures/SKSPINE1.xpm");
+	load_texture(game, &game->n_wall, "textures/SP_DUDE1.xpm");
 	load_texture(game, &game->s_wall, "textures/MARBFAC3.xpm");
 	load_texture(game, &game->e_wall, "textures/SKULWAL3.xpm");
 	load_texture(game, &game->w_wall, "textures/STONGARG.xpm");
