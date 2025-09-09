@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/07 06:54:12 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/09/09 12:21:06 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ typedef struct s_cast
 	int     map_y;
 	int     step_x;
 	int     step_y;
-	float	delta_dist_x;
-	float	delta_dist_y;
+	float	dist_x;
+	float	dist_y;
 	float	side_dist_x;
 	float	side_dist_y;
 }  			t_cast;
@@ -98,12 +98,16 @@ typedef struct	s_game
 	t_texture	w_wall;
 
 	t_player    player;
+	t_ray		ray;
+	t_wall		wall;
+	t_cast		cast;
 	
 	char		**map;
 	int			max_x;
 	int			max_y;
 
-	
+	int			side;
+
 	void    	*img;
 	char    	*address;
 	int     	bpp;
