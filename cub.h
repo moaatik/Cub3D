@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/09 12:21:06 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/09/18 15:18:19 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,14 +118,17 @@ typedef struct	s_game
 	int			floor_color;
 }				t_game;
 
-//parser
+//* parsing
 char	**input(char **av);
 void	get_map_info(t_game *game);
+void	check_map_extension(char *map_name);
+void	ft_putstr_fd(char *s, int fd);
 
-//rander
+
+//* randering
 void	render_game(t_game *game);
 
-// moves :
+//* moves :
 void	move_left(t_game *game);
 void	move_right(t_game *game);
 void	move_forward(t_game *game);
@@ -133,7 +136,7 @@ void	move_backward(t_game *game);
 void	rotate(t_game *game, int dir);
 
 
-// utils :
+//* utils :
 void	free_strs(char **strs);
 char	*get_next_line(int fd);
 int		ft_strlen(const char *s);

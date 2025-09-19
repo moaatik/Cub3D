@@ -3,22 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 09:51:19 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/02 14:23:32 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/09/18 16:27:27 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 
+//* check (.cub) + read permission
 int	check_file(char *file)
 {
 	int	len;
 	int	fd;
 
 	if (!file)
-		return (1);
+		return (-1);//todo: error => it should be -1
 	len = ft_strlen(file);
 	if (ft_strcmp(file + len - 4, ".cub"))
 		return (-1);
@@ -26,6 +27,7 @@ int	check_file(char *file)
 	return (fd);
 }
 
+//* read map from fd and convert it to string
 char	*get_map(int fd)
 {
 	char	*line;
@@ -46,6 +48,8 @@ char	*get_map(int fd)
 	}
 	return (map);
 }
+
+//* check (.cub) + read permission + copy map from .cub file to 2D array
 char	**input(char **av)
 {
 	int		fd;
@@ -59,17 +63,16 @@ char	**input(char **av)
 		return (write(2, "Error\nwhile opening the file\n", 29), NULL);
 	map = get_map(fd);
 	if (!map)
-		return (write(2, "Error\nwhile reading the file\n", 29), \
-		close(fd), NULL);
+		return (write(2, "Error\nwhile reading the file\n", 29), close(fd), NULL);
 	splitted_map = ft_split(map, '\n');
 	if (!splitted_map)
-		return (write(2, "Error\nFailed while splitting map\n", 33), free(map), \
-		close(fd), NULL);
+		return (write(2, "Error\nFailed while splitting map\n", 33), free(map), close(fd), NULL);
 	free(map);
 	close(fd);
 	return (splitted_map);
 }
 
+//* 
 void	get_map_info(t_game *game)
 {
 	int	y;

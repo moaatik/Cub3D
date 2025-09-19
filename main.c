@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:02 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/08 10:12:45 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/09/18 15:02:08 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void load_texture(t_game *game, t_texture *texture, char *path)
 
 int	init(t_game *game)
 {
-	load_texture(game, &game->n_wall, "textures/SP_DUDE1.xpm");
+	load_texture(game, &game->n_wall, "textures/SKSPINE1.xpm");
 	load_texture(game, &game->s_wall, "textures/MARBFAC3.xpm");
 	load_texture(game, &game->e_wall, "textures/SKULWAL3.xpm");
 	load_texture(game, &game->w_wall, "textures/STONGARG.xpm");
@@ -70,6 +70,10 @@ int main(int ac, char **av)
 
 	(void)ac;
 
+	//* parsing
+	parse_map(ac, av, &game);
+
+	//* basic parsing
 	game.map = input(av);
 	if (!game.map)
 		return (1);
@@ -77,24 +81,25 @@ int main(int ac, char **av)
 	game.mlx = mlx_init();
 	if (!game.mlx)
 		return (1);
-
+	//* init textures ( instructions )
 	if (init(&game))
 		return (1);
 
+	//* set player position
 	get_map_info(&game);
 
+	//* create window + image
 	game.window = mlx_new_window(game.mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3D");
 	if (!game.window)
 		return (1);
-	
 	game.img = mlx_new_image(game.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (!game.img)
 		return (1);
-
 	game.address = mlx_get_data_addr(game.img, &game.bpp, &game.size_line, &game.endian);
 	if (!game.address)
 		return (1);
 
+	//* rendering of the game
 	render_game(&game);
 
 	mlx_hook(game.window, 2, 0, key_press, &game);
