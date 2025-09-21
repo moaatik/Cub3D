@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/18 15:18:19 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/09/21 11:07:59 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdio.h>
-# include <mlx.h>
+// # include <mlx.h>
 # include <math.h>
 
 # ifndef BLOCK_SIZE
@@ -39,6 +39,22 @@
 # ifndef SCREEN_HEIGHT
 #  define SCREEN_HEIGHT 1000
 # endif
+
+//* macro for get_next_line
+#define BUFFER_SIZE 42
+
+//* Macros for ft_safe_malloc keys:
+# define ALLOCATE 1
+# define FREE_ALL 0
+# define FREE_ONE 2
+
+//* ft_saf_malloc struct:
+typedef struct s_mem_node
+{
+	void				*address;
+	struct s_mem_node	*next;
+}						t_mem_node;
+
 
 typedef struct s_texture
 {
@@ -119,32 +135,37 @@ typedef struct	s_game
 }				t_game;
 
 //* parsing
-char	**input(char **av);
-void	get_map_info(t_game *game);
+// char	**input(char **av);
+// void	get_map_info(t_game *game);
+void    parse_map(int ac, char *av[], t_game *game);
 void	check_map_extension(char *map_name);
+void	check_map_exists(char *map_file);
+char	*get_next_line(int fd);
+int		ft_strlen(const char *s);
+int		ft_strcmp(const char *s1, const char *s2);
 void	ft_putstr_fd(char *s, int fd);
-
+char	*ft_strchr (char *s, int c);
+void	ft_strcopy(char *d, char* s);
+char	*ft_strdup(char *s);
+char	*ft_strjoin(char const *s1, char const *s2);
+void	*ft_safe_malloc(size_t size, int key, int exit_status, void *to_delete);
 
 //* randering
-void	render_game(t_game *game);
+// void	render_game(t_game *game);
 
 //* moves :
-void	move_left(t_game *game);
-void	move_right(t_game *game);
-void	move_forward(t_game *game);
-void	move_backward(t_game *game);
-void	rotate(t_game *game, int dir);
+// void	move_left(t_game *game);
+// void	move_right(t_game *game);
+// void	move_forward(t_game *game);
+// void	move_backward(t_game *game);
+// void	rotate(t_game *game, int dir);
 
 
 //* utils :
-void	free_strs(char **strs);
-char	*get_next_line(int fd);
-int		ft_strlen(const char *s);
-char	*ft_strdup(const char *s1);
-char	*ft_strchr(const char *s, int c);
-char	**ft_split(char const *s, char c);
-int		ft_strcmp(const char *s1, const char *s2);
-char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
+// void	free_strs(char **strs);
+
+
+// char	**ft_split(char const *s, char c);
+// char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 #endif

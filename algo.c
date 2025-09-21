@@ -1,7 +1,10 @@
 //! algo for parsing of cub3D maps:
 
 //todo:
-1 => check if the (.cub) file exist + have permission to read
+1 => check if the (.cub) file exist + have permission to read //! done !
+    1.1 => make a get_next_line() fun
+    1.2 => read line by line
+    1.3 => check if this line is an instractions. else => error
 2 => parse the instructions:
     2.1 => init the textures:
     2.2 => check if the path of every texture is correct + exist + read permission
