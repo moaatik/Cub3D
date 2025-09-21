@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/09 12:21:06 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/09/21 16:52:25 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@
 # endif
 
 # ifndef SPEED
-#  define SPEED 7
+#  define SPEED 3
 # endif
 
 # ifndef ROT_SPEED
-#  define ROT_SPEED 0.1
+#  define ROT_SPEED 0.05
 # endif
 
 # ifndef SCREEN_WIDTH
@@ -108,6 +108,9 @@ typedef struct	s_game
 
 	int			side;
 
+	int			sprint;
+	int			keys[512];
+
 	void    	*img;
 	char    	*address;
 	int     	bpp;
@@ -124,6 +127,7 @@ void	get_map_info(t_game *game);
 
 //rander
 void	render_game(t_game *game);
+void	draw_wall_slice(t_game *game, int ray_index, float dist_world);
 
 // moves :
 void	move_left(t_game *game);

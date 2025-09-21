@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:02 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/08 10:12:45 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/09/21 17:08:41 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,38 @@ int	ft_exit(t_game *game)
 
 int	key_press(int keycode, t_game *game)
 {
-	if (keycode == 53)
-		ft_exit(game);
-	else if (keycode == 13)
-		move_forward(game);
-	else if (keycode == 1)
-		move_backward(game);
-	else if (keycode == 123)
-		rotate(game, 0);
-	else if (keycode == 124)
-		rotate(game, 1);
-	else if (keycode == 0)
-		move_right(game);
-	else if (keycode == 2)
-		move_left(game);
-	else
-		return (0);
-	render_game(game);
+	if (keycode == 257)
+		game->sprint = 2;
+	game->keys[keycode] = 1;
 	return (0);
+}
+
+int	key_release(int keycode, t_game *game)
+{
+	if (keycode == 257)
+		game->sprint = 1;
+	game->keys[keycode] = 0;
+	return (0);
+}
+
+int update(t_game *game)
+{
+    if (game->keys[53])
+        ft_exit(game);
+    if (game->keys[13])
+        move_forward(game);
+    if (game->keys[1])
+        move_backward(game);
+    if (game->keys[123] && !game->keys[124])
+        rotate(game, 0);
+    if (game->keys[124] && !game->keys[123])
+        rotate(game, 1);
+    if (game->keys[0])
+        move_right(game);
+    if (game->keys[2])
+        move_left(game);
+    render_game(game);
+    return (0);
 }
 
 void load_texture(t_game *game, t_texture *texture, char *path)
@@ -61,6 +75,7 @@ int	init(t_game *game)
 	load_texture(game, &game->w_wall, "textures/STONGARG.xpm");
 	game->ceiling_color = 0x780010;
 	game->floor_color = 0x002000;
+	game->sprint = 1;
 	return (0);
 }
 
@@ -98,6 +113,8 @@ int main(int ac, char **av)
 	render_game(&game);
 
 	mlx_hook(game.window, 2, 0, key_press, &game);
+	mlx_hook(game.window, 3, 0, key_release, &game);
+	mlx_loop_hook(game.mlx, update, &game);
 	mlx_hook(game.window, 17, 0, ft_exit, &game);
 	mlx_loop(game.mlx);
 	return (0);
