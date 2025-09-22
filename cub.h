@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/21 11:07:59 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/09/22 17:41:46 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,29 @@ typedef struct s_mem_node
 	struct s_mem_node	*next;
 }						t_mem_node;
 
+//* enum of instructions
+typedef enum e_instructions_type
+{
+	NO,	//? North texture
+	SO,	//? South texture
+	WE,	//? West texture
+	EA,	//? East texture
+	F,	//? Floor color
+	C,	//? Ceiling color
+}	t_instructions_type;
+
 
 typedef struct s_texture
 {
-	void    *img;
-	char    *address;
-	int     width;
-	int     height;
-	int     bpp;
-	int     size_line;
-	int     endian;
+	int		id;			//* identifier of the texture (NO/SO/WE/EA/F/C) /? does realy need it !?
+	char	*path;		//* path of the texture
+	void    *img;		//* return value of mlx_xpm_file_to_image
+	char    *address;	//* return value of mlx_get_data_addr
+	int     width;		//* inited by mlx_xpm_file_to_image()
+	int     height;		//* inited by mlx_xpm_file_to_image()
+	int     bpp;		//* inited by mlx_get_data_addr()
+	int     size_line;	//* inited by mlx_get_data_addr()
+	int     endian;		//* needed by mlx_get_data_addr() but not used!
 }  			t_texture;
 
 typedef struct s_cast
@@ -130,8 +143,8 @@ typedef struct	s_game
 	int     	size_line;
 	int     	endian;
 	
-	int			ceiling_color;
-	int			floor_color;
+	int			ceiling_color;	//todo: init it by parsing
+	int			floor_color;	//todo: init it by parsing
 }				t_game;
 
 //* parsing
@@ -139,16 +152,19 @@ typedef struct	s_game
 // void	get_map_info(t_game *game);
 void    parse_map(int ac, char *av[], t_game *game);
 void	check_map_extension(char *map_name);
-void	check_map_exists(char *map_file);
+int		check_map_exists(char *map_file);
 char	*get_next_line(int fd);
 int		ft_strlen(const char *s);
 int		ft_strcmp(const char *s1, const char *s2);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	ft_putstr_fd(char *s, int fd);
 char	*ft_strchr (char *s, int c);
 void	ft_strcopy(char *d, char* s);
 char	*ft_strdup(char *s);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char *s1, char *s2);
 void	*ft_safe_malloc(size_t size, int key, int exit_status, void *to_delete);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*get_path_from_map(char *line);
 
 //* randering
 // void	render_game(t_game *game);
@@ -166,6 +182,5 @@ void	*ft_safe_malloc(size_t size, int key, int exit_status, void *to_delete);
 
 
 // char	**ft_split(char const *s, char c);
-// char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 #endif

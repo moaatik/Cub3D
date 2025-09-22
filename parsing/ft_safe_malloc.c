@@ -6,11 +6,11 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 11:02:25 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/09/21 11:06:11 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/09/22 16:44:22 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "../cub.h"
 
 //? Zero out a block of memory.
 static void	ft_bzero(void *s, size_t len)

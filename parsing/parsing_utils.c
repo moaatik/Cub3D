@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:20:08 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/09/21 11:09:54 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/09/22 17:41:57 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*ft_strdup(char *s)
 }
 
 //* join 2 strings and free the first one
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*str;
 	int		j;
@@ -119,8 +119,60 @@ void	check_map_extension(char *map_name)
 	}
 }
 
+//* compare 2 strs with a specific lenght 
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	while (n--)
+	{
+		if (*s1 != *s2 || !*s1 || !*s2)
+			return ((unsigned char)*s1 - (unsigned char)*s2);
+		s1++;
+		s2++;
+	}
+	return (0);
+}
+
+//* make a str from a str using start and lenght
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	size_t	i;
+	char	*str;
+
+	if (!s)
+		return (NULL);
+	if (start > (unsigned int)ft_strlen(s) || len == 0)
+		return (ft_strdup(""));
+	if (len > (unsigned int)ft_strlen(s + start))
+		len = ft_strlen(s + start);
+	str = ft_safe_malloc(len + 1 * sizeof(char), ALLOCATE, 1, NULL);
+	i = 0;
+	while (i < len)
+	{
+		str[i] = s[start + i];
+		i++;
+	}
+	return (str);
+}
+
+char	*get_path_from_map(char *line)
+{
+	char	*str;
+	int		i;
+
+	i = 0;
+	while (line[i])
+		i++;
+	i--;
+	while ((line[i] >= 9 && line[i] <= 13) || line[i] == 32)
+		i--;
+	
+	str = ft_substr(line, 0, i);
+	
+	return (str);
+}
+
 //* check if the map file exist & open the fd & calculate width + height & copy mape frome fd to 2D array
-void	check_map_exists(char *map_file)
+int	check_map_exists(char *map_file)
 {
 	int	fd;
 
@@ -139,7 +191,8 @@ void	check_map_exists(char *map_file)
 	// 	exit(1);
 	// }
 	// make_area(fd, game);
-	close(fd);
+	// close(fd);
+	return (fd);
 }
 
 //* copy the map from file (.cub) to 2D array

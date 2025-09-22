@@ -19,7 +19,7 @@
 // 	int	fd;
 
 // 	if (!file)
-// 		return (-1);//todo: error => it should be -1
+// 		return (-1);
 // 	len = ft_strlen(file);
 // 	if (ft_strcmp(file + len - 4, ".cub"))
 // 		return (-1);

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exam_get_next_line.c                               :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 09:41:39 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/09/21 10:19:34 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/09/22 16:45:19 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "../cub.h"
 
 char *get_next_line(int fd)
 {
@@ -23,7 +23,7 @@ char *get_next_line(int fd)
 	line = ft_strdup(buf);
 
 	//? read from the fd and append to the last str until we found a '\n' 
-	while (!(new_line = str_chr(line, '\n')) && (i = read(fd, buf, BUFFER_SIZE))) 
+	while (!(new_line = ft_strchr(line, '\n')) && (i = read(fd, buf, BUFFER_SIZE))) 
 	{
 		buf[i] = '\0';
 		line = ft_strjoin(line, buf);
@@ -36,7 +36,7 @@ char *get_next_line(int fd)
 	if (new_line != NULL) //? save characters after '\n' in a the buf (if we foun the '\n')
 	{
 		j = new_line - line + 1; //* j = 11 - 0 + 1 = 12 ( new_line = ptr to '\n') ( line ptr to the first char of str) ( + 1 of the '\n' => j = indix after '\n' )
-		str_copy(buf, new_line + 1); //* copy chars that are after '\n' in the buf ( daba lbufer fih cheyata )
+		ft_strcopy(buf, new_line + 1); //* copy chars that are after '\n' in the buf ( daba lbufer fih cheyata )
 	}
 	else //? when we found the last line in the fd whitout a '\n'.
 	{  //? we calculate it's lenght and null terminate the buffer and we null terminate the last line . then we return it
