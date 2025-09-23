@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/22 17:41:46 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/09/23 21:50:09 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,8 @@ char	*ft_strjoin(char *s1, char *s2);
 void	*ft_safe_malloc(size_t size, int key, int exit_status, void *to_delete);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*get_path_from_map(char *line);
+char	**ft_split(const char *str, char c, int *words_nb);
+int		get_color_from_map(char *line);
 
 //* randering
 // void	render_game(t_game *game);

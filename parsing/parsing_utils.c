@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:20:08 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/09/22 17:41:57 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/09/23 21:46:13 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,35 @@ int	ft_strlen(const char *s)
 	while (s && s[i])
 		i++;
 	return (i);
+}
+
+//* check if a str contain a whitspace
+int	is_space(char *str)
+{
+	while (*str)
+	{
+		if ((*str >= 9 && *str <= 13) || *str == 32)
+			return (1);
+		str++;
+	}
+	return (0);
+}
+
+//* converte ascii to integer + check if nb > 255
+int	ft_atoi(char *str)
+{
+	long	nb;
+
+	nb = 0;
+	if (!str)
+		return (-1);
+	while (*str >= '0' && *str <= '9')
+	{
+		nb = (nb * 10) + (*str++ - 48);
+		if (nb > 255)
+			return (-1);
+	}
+	return ((int)nb);
 }
 
 //* compare 2 strings
@@ -94,8 +123,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	j = 0;
 	i = 0;
 	str = ft_safe_malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char), ALLOCATE, 1, NULL);
-	if (!str)
-		return (NULL);
 	while (s1[i])
 		str[j++] = s1[i++];
 	i = 0;
@@ -115,7 +142,7 @@ void	check_map_extension(char *map_name)
 	if (len < 4 || ft_strcmp(map_name + len - 4, ".cub") != 0)
 	{
 		ft_putstr_fd("Error\nMap file must have a .cub extension\n", 2);
-		exit(1);
+		ft_safe_malloc(0, FREE_ALL, 1, NULL);
 	}
 }
 
@@ -154,6 +181,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (str);
 }
 
+//* 
 char	*get_path_from_map(char *line)
 {
 	char	*str;
@@ -171,6 +199,77 @@ char	*get_path_from_map(char *line)
 	return (str);
 }
 
+int	convert_rgb_from_str_to_int(char **rgb_strs)
+{
+	int	i;
+	int	rgb[3];
+
+	i = 0;
+	while (rgb_strs[i])
+	{
+		rgb_strs[i] = get_path_from_map(rgb_strs[i]);
+		if (is_space(rgb_strs[i]))
+		{
+				ft_putstr_fd("Error\nRGB is not correct!\n", 2);
+				ft_safe_malloc(0, FREE_ALL, 1, NULL);
+		}
+		rgb[i] = ft_atoi(rgb_strs[i]);
+		if (rgb[i] == -1)
+		{
+			ft_putstr_fd("Error\nRGB is not correct!\n", 2);
+			ft_safe_malloc(0, FREE_ALL, 1, NULL);
+		}
+		i++;
+	}
+	return((rgb[0] << 16) | (rgb[1] << 8) | rgb[2]);
+}
+
+//* 
+int	get_color_from_map(char *line)
+{
+	char	*color_str;
+	char	**rgb_strs;
+	int		words_nb;
+	int		i;
+
+	color_str = get_path_from_map(line);
+	while (color_str[i])
+	{
+		if ((color_str[i] < '0' || color_str[i] > '9') && color_str[i] != ',')
+		{
+			ft_putstr_fd("Error\nRGB is not correct!\n", 2);
+			ft_safe_malloc(0, FREE_ALL, 1, NULL);
+		}
+		i++;
+	}
+	rgb_strs = ft_split(color_str, ',', &words_nb);//* split RGB with ','
+	if (words_nb != 3) //* check if there is just 3 RGB strs
+	{
+		ft_putstr_fd("Error\nRGB is not correct!\n", 2);
+		ft_safe_malloc(0, FREE_ALL, 1, NULL);
+	}
+	//* check if RGB contain any whitspaces at the middle
+	
+	//* skip white spaces at the start and in the end and return Error if it detect any whit spaces at the middle !
+
+	return (convert_rgb_from_str_to_int(rgb_strs)); //* it return a int ( converted from rgb str )
+
+
+
+
+	//todo: handle this : 200,   100  , 0     ( space between RGB)
+	//*algo: after you split it, skip whitspaces at the start and the end and check if the final str contain any spaces at the mide if yes it's an error !
+
+
+	
+	//todo: line = [220,100,0]
+	//todo: parse this str:
+	//todo: check that it's just 3 elements
+	//todo: convert it from str to int
+	//todo: chek if 0 >= r,g,b <= 255
+	//*algo: do the same as you do with get_path_from_map and then split it with ',' and chec if the number of splited items is 3 then check if it's just a ints and check if >= 0 && <= 255 . then convert it to one int and assigne it to game struct
+}
+
 //* check if the map file exist & open the fd & calculate width + height & copy mape frome fd to 2D array
 int	check_map_exists(char *map_file)
 {
@@ -180,9 +279,9 @@ int	check_map_exists(char *map_file)
 	if (fd == -1)
 	{
 		ft_putstr_fd("Error\nMap file not found or inaccessible.\n", 2);
-		exit(1);
+		ft_safe_malloc(0, FREE_ALL, 1, NULL);
 	}
-	// calculate_size(game, fd);//todo:
+	// calculate_size(game, fd);
 	// close(fd);
 	// fd = open(map_file, O_RDONLY);
 	// if (fd == -1)
