@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hamza_hat <hamza_hat@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:20:08 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/09/23 21:46:13 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/09/24 10:25:55 by hamza_hat        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ char	*get_path_from_map(char *line)
 	while ((line[i] >= 9 && line[i] <= 13) || line[i] == 32)
 		i--;
 	
-	str = ft_substr(line, 0, i);
+	str = ft_substr(line, 0, i + 1);
 	
 	return (str);
 }
@@ -232,6 +232,7 @@ int	get_color_from_map(char *line)
 	int		words_nb;
 	int		i;
 
+	i = 0;
 	color_str = get_path_from_map(line);
 	while (color_str[i])
 	{

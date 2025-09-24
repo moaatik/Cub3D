@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hamza_hat <hamza_hat@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:15:40 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/09/23 21:53:35 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/09/24 10:27:48 by hamza_hat        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	parse_map(int ac, char *av[], t_game *game)
 			printf("line => [%s]", line); //? Debuging
 			ft_safe_malloc(0, FREE_ALL, 1, NULL);
 		}
-		line = get_next_line(fd);
+		line = get_next_line(fd);//todo: free line after use
 	}
 	close(fd);
 }
