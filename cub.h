@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/21 16:52:25 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/09/25 15:25:42 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,17 @@ typedef struct s_player
 	float   rot_speed;
 }           t_player;
 
+typedef struct s_keys
+{
+	int   w;
+	int   a;
+	int   s;
+	int   d;
+	int   left;
+	int   right;
+	int   escape;
+}           t_keys;
+
 typedef struct	s_game
 {
 	void		*mlx;
@@ -98,6 +109,7 @@ typedef struct	s_game
 	t_texture	w_wall;
 
 	t_player    player;
+	t_keys		keys;
 	t_ray		ray;
 	t_wall		wall;
 	t_cast		cast;
@@ -109,7 +121,6 @@ typedef struct	s_game
 	int			side;
 
 	int			sprint;
-	int			keys[512];
 
 	void    	*img;
 	char    	*address;
