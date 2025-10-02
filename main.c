@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:02 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/22 16:40:40 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/09/26 10:54:55 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,3 +105,8 @@ int main(int ac, char **av)
 	// mlx_loop(game.mlx);
 	return (0);
 }
+
+//todo; understand why we convert from rgb to int
+//todo: push your updates !
+//todo: copy the video from pc to your phone
+//todo: stor the RGB in char not int ( befor you convert it to one int => just for memory opetimization )

@@ -6,27 +6,24 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 11:02:25 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/09/22 16:44:22 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/09/24 18:02:55 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub.h"
 
 //? Zero out a block of memory.
-static void	ft_bzero(void *s, size_t len)
+void	ft_bzero(void *s, size_t len)
 {
 	unsigned char	*tmp;
 
 	tmp = (unsigned char *)s;
-	while (len--)
+	while (len-- > 0)
 		*tmp++ = 0;
 }
 
-/*
-? Free all allocated memory in the memory tracking list and exit if
-? the siz is not 1, 1 = free but not exit.
-*/
-static void	free_mem_list(t_mem_node **list, int exit_status, size_t size)
+//? Free all allocated memory in the memory tracking list and exit if
+static void	free_mem_list(t_mem_node **list, int exit_status)
 {
 	t_mem_node	*tmp;
 
@@ -37,8 +34,7 @@ static void	free_mem_list(t_mem_node **list, int exit_status, size_t size)
 		free(*list);
 		*list = tmp;
 	}
-	if (size != 1)
-		exit(exit_status);
+	exit(exit_status);
 }
 
 //? Add a new memory block to the memory tracking list.
@@ -51,7 +47,7 @@ static void	lst_add_back_malloc(t_mem_node **lst, void *value)
 		return ;
 	tmp = malloc(sizeof(t_mem_node));
 	if (!tmp)
-		free_mem_list(lst, -1, 0);
+		free_mem_list(lst, -1);
 	tmp->address = value;
 	tmp->next = NULL;
 	if (!*lst)
@@ -104,12 +100,12 @@ void	*ft_safe_malloc(size_t size, int key, int exit_status, void *to_delete)
 	{
 		ptr = malloc(size);
 		if (!ptr)
-			free_mem_list(&mem_node, -1, 0);
+			free_mem_list(&mem_node, -1);
 		lst_add_back_malloc(&mem_node, ptr);
 		ft_bzero(ptr, size);
 	}
 	else if (key == FREE_ALL)
-		free_mem_list(&mem_node, exit_status, size);
+		free_mem_list(&mem_node, exit_status);
 	else if (key == FREE_ONE)
 		free_specific_node(&mem_node, to_delete);
 	return (ptr);

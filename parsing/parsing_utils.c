@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hamza_hat <hamza_hat@student.42.fr>        +#+  +:+       +#+        */
+/*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:20:08 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/09/24 10:25:55 by hamza_hat        ###   ########.fr       */
+/*   Updated: 2025/09/25 11:52:18 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[i])
 		str[j++] = s2[i++];
 	str[j] = 0;
-	free(s1);
+	ft_safe_malloc(0, FREE_ONE, 1, s1);
 	return (str);
 }
 
@@ -181,13 +181,15 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (str);
 }
 
-//* 
+//* get the path from map + remove spaces
 char	*get_path_from_map(char *line)
 {
 	char	*str;
 	int		i;
 
 	i = 0;
+	while ((*line >= 9 && *line <= 13) || *line == 32)
+		line++;
 	while (line[i])
 		i++;
 	i--;
@@ -224,7 +226,7 @@ int	convert_rgb_from_str_to_int(char **rgb_strs)
 	return((rgb[0] << 16) | (rgb[1] << 8) | rgb[2]);
 }
 
-//* 
+//* get the color from map + convert it to (int)
 int	get_color_from_map(char *line)
 {
 	char	*color_str;
@@ -236,7 +238,7 @@ int	get_color_from_map(char *line)
 	color_str = get_path_from_map(line);
 	while (color_str[i])
 	{
-		if ((color_str[i] < '0' || color_str[i] > '9') && color_str[i] != ',')
+		if ((color_str[i] < '0' || color_str[i] > '9') && color_str[i] != ',' && (color_str[i] < 9 || color_str[i] > 13) && color_str[i] != 32)
 		{
 			ft_putstr_fd("Error\nRGB is not correct!\n", 2);
 			ft_safe_malloc(0, FREE_ALL, 1, NULL);
@@ -244,31 +246,30 @@ int	get_color_from_map(char *line)
 		i++;
 	}
 	rgb_strs = ft_split(color_str, ',', &words_nb);//* split RGB with ','
-	if (words_nb != 3) //* check if there is just 3 RGB strs
+	if (words_nb != 3 || ft_count_char(color_str, ',', 2)) //* check if there is just 3 RGB strs
 	{
 		ft_putstr_fd("Error\nRGB is not correct!\n", 2);
 		ft_safe_malloc(0, FREE_ALL, 1, NULL);
 	}
-	//* check if RGB contain any whitspaces at the middle
-	
-	//* skip white spaces at the start and in the end and return Error if it detect any whit spaces at the middle !
-
 	return (convert_rgb_from_str_to_int(rgb_strs)); //* it return a int ( converted from rgb str )
+}
 
+int	ft_count_char(char *str, char c, int reps)
+{
+	int	count;
 
-
-
-	//todo: handle this : 200,   100  , 0     ( space between RGB)
-	//*algo: after you split it, skip whitspaces at the start and the end and check if the final str contain any spaces at the mide if yes it's an error !
-
-
-	
-	//todo: line = [220,100,0]
-	//todo: parse this str:
-	//todo: check that it's just 3 elements
-	//todo: convert it from str to int
-	//todo: chek if 0 >= r,g,b <= 255
-	//*algo: do the same as you do with get_path_from_map and then split it with ',' and chec if the number of splited items is 3 then check if it's just a ints and check if >= 0 && <= 255 . then convert it to one int and assigne it to game struct
+	count = 0;
+	if (!str)
+		return (1);
+	while (*str)
+	{
+		if (*str == c)
+			count++;
+		str++;
+	}
+	if (count != reps)
+		return (1);
+	return (0);
 }
 
 //* check if the map file exist & open the fd & calculate width + height & copy mape frome fd to 2D array
@@ -293,6 +294,27 @@ int	check_map_exists(char *map_file)
 	// make_area(fd, game);
 	// close(fd);
 	return (fd);
+}
+
+//* check if the path exist + accessible
+void	check_path_exist(char *path)
+{
+	int	fd;
+
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+	{
+		ft_putstr_fd("Error\ntexture file not found or inaccessible.\n", 2);
+		ft_safe_malloc(0, FREE_ALL, 1, NULL);
+	}
+	close(fd);
+}
+
+void	init_game_data(t_game *game)
+{
+	ft_bzero(game, sizeof(game));
+	game->ceiling_color = -1;
+	game->floor_color = -1;
 }
 
 //* copy the map from file (.cub) to 2D array

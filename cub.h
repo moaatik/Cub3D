@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/23 21:50:09 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/09/25 11:50:31 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,8 +143,8 @@ typedef struct	s_game
 	int     	size_line;
 	int     	endian;
 	
-	int			ceiling_color;	//todo: init it by parsing
-	int			floor_color;	//todo: init it by parsing
+	int			ceiling_color;
+	int			floor_color;
 }				t_game;
 
 //* parsing
@@ -167,6 +167,10 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*get_path_from_map(char *line);
 char	**ft_split(const char *str, char c, int *words_nb);
 int		get_color_from_map(char *line);
+void	check_path_exist(char *path);
+void	ft_bzero(void *s, size_t n);
+void	init_game_data(t_game *game);
+int		ft_count_char(char *str, char c, int reps);
 
 //* randering
 // void	render_game(t_game *game);

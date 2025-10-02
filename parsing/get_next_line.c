@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 09:41:39 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/09/22 16:45:19 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/09/24 13:59:32 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char *get_next_line(int fd)
 
 	//? if read return 0 ( i = 0 ) which mean we reach the EOF (for example in an empty line)
 	if (ft_strlen(line) == 0)
-		return(free(line), NULL);
+		return(ft_safe_malloc(0, FREE_ONE, 1, line), NULL);
 
 	if (new_line != NULL) //? save characters after '\n' in a the buf (if we foun the '\n')
 	{
