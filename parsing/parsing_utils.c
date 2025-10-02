@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:20:08 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/09/25 11:52:18 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/02 23:19:10 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,7 +312,7 @@ void	check_path_exist(char *path)
 
 void	init_game_data(t_game *game)
 {
-	ft_bzero(game, sizeof(game));
+	ft_bzero(game, sizeof(*game));
 	game->ceiling_color = -1;
 	game->floor_color = -1;
 }

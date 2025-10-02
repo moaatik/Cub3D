@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:15:40 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/10/02 12:44:49 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/02 23:06:40 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,11 @@ void	parse_map(int ac, char *av[], t_game *game)
 		//* check if it's an instractions (NO/SO/WE/EA) (F/C)
 		if (ft_strncmp(line, "NO", 2) == 0)
 		{
+			if (game->n_wall.path != NULL)
+			{
+				ft_putstr_fd("Error\nDouble instructions\n", 2);
+				ft_safe_malloc(0, FREE_ALL, 1, NULL);
+			}
 			line += 2;
 			if ((*line < 9 || *line > 13) && *line != 32)
 			{
@@ -56,6 +61,11 @@ void	parse_map(int ac, char *av[], t_game *game)
 		}
 		else if (ft_strncmp(line, "SO", 2) == 0)
 		{
+			if (game->s_wall.path != NULL)
+			{
+				ft_putstr_fd("Error\nDouble instructions\n", 2);
+				ft_safe_malloc(0, FREE_ALL, 1, NULL);
+			}
 			line += 2;
 			if ((*line < 9 || *line > 13) && *line != 32)
 			{
@@ -67,6 +77,11 @@ void	parse_map(int ac, char *av[], t_game *game)
 		}
 		else if (ft_strncmp(line, "WE", 2) == 0)
 		{
+			if (game->w_wall.path != NULL)
+			{
+				ft_putstr_fd("Error\nDouble instructions\n", 2);
+				ft_safe_malloc(0, FREE_ALL, 1, NULL);
+			}
 			line += 2;
 			if ((*line < 9 || *line > 13) && *line != 32)
 			{
@@ -78,6 +93,11 @@ void	parse_map(int ac, char *av[], t_game *game)
 		}
 		else if (ft_strncmp(line, "EA", 2) == 0)
 		{
+			if (game->e_wall.path != NULL)
+			{
+				ft_putstr_fd("Error\nDouble instructions\n", 2);
+				ft_safe_malloc(0, FREE_ALL, 1, NULL);
+			}
 			line += 2;
 			if ((*line < 9 || *line > 13) && *line != 32)
 			{
@@ -89,6 +109,11 @@ void	parse_map(int ac, char *av[], t_game *game)
 		}
 		else if (ft_strncmp(line, "F", 1) == 0)
 		{
+			if (game->floor_color != -1)
+			{
+				ft_putstr_fd("Error\nDouble instructions\n", 2);
+				ft_safe_malloc(0, FREE_ALL, 1, NULL);
+			}
 			line++;
 			if ((*line < 9 || *line > 13) && *line != 32)
 			{
@@ -99,6 +124,11 @@ void	parse_map(int ac, char *av[], t_game *game)
 		}
 		else if (ft_strncmp(line, "C", 1) == 0)
 		{
+			if (game->ceiling_color != -1)
+			{
+				ft_putstr_fd("Error\nDouble instructions\n", 2);
+				ft_safe_malloc(0, FREE_ALL, 1, NULL);
+			}
 			line++;
 			if ((*line < 9 || *line > 13) && *line != 32)
 			{
@@ -111,6 +141,14 @@ void	parse_map(int ac, char *av[], t_game *game)
 		{
 			ft_putstr_fd("Error\nInstructions not found\n", 2);
 			ft_safe_malloc(0, FREE_ALL, 1, NULL);
+		}
+		else if (*line == '0' || *line == '1')
+		{
+			printf("this is the first line of map : [%s]", line);
+			//todo: count the dimention of map 
+			//todo: allocate 2D array for this map
+			//todo: copy it to this new 2D array
+			//todo: start work on it ( look at algo.c file for more infos )
 		}
 		ft_safe_malloc(0, FREE_ONE, 1, tmp);
 		line = get_next_line(fd);
@@ -128,6 +166,3 @@ void	parse_map(int ac, char *av[], t_game *game)
 	printf("line => [%s]\n", line);
 	close(fd);
 }
-
-
-//to
