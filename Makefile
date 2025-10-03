@@ -1,4 +1,4 @@
-SRCS = main.c rendring.c ray_casting.c moves.c utils.c split.c parsing.c get_next_line.c
+SRCS = main.c ray_casting.c put_texture.c moves.c utils.c split.c parsing.c get_next_line.c
 
 OBJS = $(SRCS:.c=.o)
 
