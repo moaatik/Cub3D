@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:57:56 by moaatik           #+#    #+#             */
-/*   Updated: 2025/10/03 09:21:10 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/10/03 10:32:28 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,21 +93,21 @@ int run_dda(t_game *game)
 
 float distance(t_game *game)
 {
-    float perp_wall_dist;
+    float wall_dist;
     
     if (game->side == 0)
-        perp_wall_dist = (game->cast.side_dist_x - game->cast.step_x);
+        wall_dist = (game->cast.side_dist_x - game->cast.step_x);
     else
-        perp_wall_dist = (game->cast.side_dist_y - game->cast.step_y);
+        wall_dist = (game->cast.side_dist_y - game->cast.step_y);
     
-    perp_wall_dist *= BLOCK_SIZE;
+    wall_dist *= BLOCK_SIZE;
     
-    game->ray.x = game->player.x + game->ray.dir_x * perp_wall_dist;
-    game->ray.y = game->player.y + game->ray.dir_y * perp_wall_dist;
+    game->ray.x = game->player.x + game->ray.dir_x * wall_dist;
+    game->ray.y = game->player.y + game->ray.dir_y * wall_dist;
 
-    perp_wall_dist *= game->player.dir_x * game->ray.dir_x + game->player.dir_y * game->ray.dir_y;
+    wall_dist *= game->player.dir_x * game->ray.dir_x + game->player.dir_y * game->ray.dir_y;
     
-    return perp_wall_dist;
+    return (wall_dist);
 }
 
 float	cast_ray(t_game *game)
