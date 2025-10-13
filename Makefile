@@ -1,4 +1,4 @@
-SRCS = main.c rendring.c moves.c utils.c split.c parsing.c get_next_line.c
+SRCS = main.c parsing/map_parsing.c parsing/parsing_utils.c parsing/ft_safe_malloc.c parsing/get_next_line.c parsing/ft_split.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -13,7 +13,7 @@ all: $(NAME)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -lmlx -framework OpenGL -framework AppKit -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 clean:
 	rm -f $(OBJS)

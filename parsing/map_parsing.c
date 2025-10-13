@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:15:40 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/10/02 23:06:40 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/13 15:08:02 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,155 +14,43 @@
 
 void	parse_map(int ac, char *av[], t_game *game)
 {
-	(void) game;
 	char	*line;
-	char	*tmp;
+	char	*cursor;
 	int		fd;
 
 	if (ac != 2)
-	{
-		ft_putstr_fd("Error\nNo config file found\n", 2);
-		ft_safe_malloc(0, FREE_ALL, 1, NULL);
-	}
+		error_exit("Error\nNo config file found\n");
+
 	check_map_extension(av[1]);
 	fd = check_map_exists(av[1]);
 	init_game_data(game);
 	line = get_next_line(fd);
-	tmp = line;
 	while (line)
 	{
-		if (*line == '\n')
+		cursor = skip_white_spaces(line);
+
+		//* skip empty lines
+		if (!*cursor)
 		{
-			ft_safe_malloc(0, FREE_ONE, 1, tmp);
+			ft_safe_malloc(0, FREE_ONE, 1, line);
 			line = get_next_line(fd);
-			tmp = line;
 			continue ;
 		}
-		//* skip white spaces at the start
-		while ((*line >= 9 && *line <= 13) || *line == 32)
-			line++;
-		
-		//* check if it's an instractions (NO/SO/WE/EA) (F/C)
-		if (ft_strncmp(line, "NO", 2) == 0)
+		else if (is_instruction(cursor))
+			parse_instructions(game, cursor);
+		else if (it_is_map(cursor))
 		{
-			if (game->n_wall.path != NULL)
-			{
-				ft_putstr_fd("Error\nDouble instructions\n", 2);
-				ft_safe_malloc(0, FREE_ALL, 1, NULL);
-			}
-			line += 2;
-			if ((*line < 9 || *line > 13) && *line != 32)
-			{
-				ft_putstr_fd("Error\nInvalid texture identifier format\n", 2);
-				ft_safe_malloc(0, FREE_ALL, 1, NULL);
-			}
-			game->n_wall.path = get_path_from_map(line);
-			check_path_exist(game->n_wall.path);
+			check_all_instructions_are_before_map(game);
+            parse_map_block(fd, cursor, game); //todo:
+ 			ft_safe_malloc(0, FREE_ONE, 1, line);
+			break;
 		}
-		else if (ft_strncmp(line, "SO", 2) == 0)
-		{
-			if (game->s_wall.path != NULL)
-			{
-				ft_putstr_fd("Error\nDouble instructions\n", 2);
-				ft_safe_malloc(0, FREE_ALL, 1, NULL);
-			}
-			line += 2;
-			if ((*line < 9 || *line > 13) && *line != 32)
-			{
-				ft_putstr_fd("Error\nInvalid texture identifier format\n", 2);
-				ft_safe_malloc(0, FREE_ALL, 1, NULL);
-			}
-			game->s_wall.path = get_path_from_map(line);
-			check_path_exist(game->s_wall.path);
-		}
-		else if (ft_strncmp(line, "WE", 2) == 0)
-		{
-			if (game->w_wall.path != NULL)
-			{
-				ft_putstr_fd("Error\nDouble instructions\n", 2);
-				ft_safe_malloc(0, FREE_ALL, 1, NULL);
-			}
-			line += 2;
-			if ((*line < 9 || *line > 13) && *line != 32)
-			{
-				ft_putstr_fd("Error\nInvalid texture identifier format\n", 2);
-				ft_safe_malloc(0, FREE_ALL, 1, NULL);
-			}
-			game->w_wall.path = get_path_from_map(line);
-			check_path_exist(game->w_wall.path);
-		}
-		else if (ft_strncmp(line, "EA", 2) == 0)
-		{
-			if (game->e_wall.path != NULL)
-			{
-				ft_putstr_fd("Error\nDouble instructions\n", 2);
-				ft_safe_malloc(0, FREE_ALL, 1, NULL);
-			}
-			line += 2;
-			if ((*line < 9 || *line > 13) && *line != 32)
-			{
-				ft_putstr_fd("Error\nInvalid texture identifier format\n", 2);
-				ft_safe_malloc(0, FREE_ALL, 1, NULL);
-			}
-			game->e_wall.path = get_path_from_map(line);
-			check_path_exist(game->e_wall.path);
-		}
-		else if (ft_strncmp(line, "F", 1) == 0)
-		{
-			if (game->floor_color != -1)
-			{
-				ft_putstr_fd("Error\nDouble instructions\n", 2);
-				ft_safe_malloc(0, FREE_ALL, 1, NULL);
-			}
-			line++;
-			if ((*line < 9 || *line > 13) && *line != 32)
-			{
-				ft_putstr_fd("Error\nInvalid texture identifier format\n", 2);
-				ft_safe_malloc(0, FREE_ALL, 1, NULL);
-			}
-			game->floor_color = get_color_from_map(line);
-		}
-		else if (ft_strncmp(line, "C", 1) == 0)
-		{
-			if (game->ceiling_color != -1)
-			{
-				ft_putstr_fd("Error\nDouble instructions\n", 2);
-				ft_safe_malloc(0, FREE_ALL, 1, NULL);
-			}
-			line++;
-			if ((*line < 9 || *line > 13) && *line != 32)
-			{
-				ft_putstr_fd("Error\nInvalid texture identifier format\n", 2);
-				ft_safe_malloc(0, FREE_ALL, 1, NULL);
-			}
-			game->ceiling_color = get_color_from_map(line);
-		}
-		else if (!game->n_wall.path || !game->s_wall.path || !game->w_wall.path || !game->e_wall.path || game->floor_color == -1 || game->ceiling_color == -1)
-		{
-			ft_putstr_fd("Error\nInstructions not found\n", 2);
-			ft_safe_malloc(0, FREE_ALL, 1, NULL);
-		}
-		else if (*line == '0' || *line == '1')
-		{
-			printf("this is the first line of map : [%s]", line);
-			//todo: count the dimention of map 
-			//todo: allocate 2D array for this map
-			//todo: copy it to this new 2D array
-			//todo: start work on it ( look at algo.c file for more infos )
-		}
-		ft_safe_malloc(0, FREE_ONE, 1, tmp);
+		else
+			error_exit("Error\nInstructions not correct\n");
+
+		ft_safe_malloc(0, FREE_ONE, 1, line);
 		line = get_next_line(fd);
-		tmp = line;
 	}
-	//? debuging: 
-	printf("everything is correct !\n");
-	printf("DATA:\n");
-	printf("NO => [%s]\n", game->n_wall.path);
-	printf("SO => [%s]\n", game->s_wall.path);
-	printf("WE => [%s]\n", game->w_wall.path);
-	printf("EA => [%s]\n", game->e_wall.path);
-	printf("F  => [%d]\n", game->floor_color);
-	printf("F  => [%d]\n", game->ceiling_color);
-	printf("line => [%s]\n", line);
+
 	close(fd);
 }

@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/25 11:50:31 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/13 14:59:58 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdio.h>
+# include <stdbool.h>
 // # include <mlx.h>
 # include <math.h>
 
@@ -66,6 +67,12 @@ typedef enum e_instructions_type
 	C,	//? Ceiling color
 }	t_instructions_type;
 
+typedef struct s_map
+{
+	char	**map;
+	int		height;
+	int		width;
+}		t_map;
 
 typedef struct s_texture
 {
@@ -131,7 +138,8 @@ typedef struct	s_game
 	t_wall		wall;
 	t_cast		cast;
 	
-	char		**map;
+	t_map		map;
+	// char		**map;
 	int			max_x;
 	int			max_y;
 
@@ -150,6 +158,10 @@ typedef struct	s_game
 //* parsing
 // char	**input(char **av);
 // void	get_map_info(t_game *game);
+void	parse_map_block(int fd, char *cursor, t_game *game);
+void	error_exit(char *str);
+bool	is_instruction(char *str);
+char	*skip_white_spaces(char *str);
 void    parse_map(int ac, char *av[], t_game *game);
 void	check_map_extension(char *map_name);
 int		check_map_exists(char *map_file);
@@ -164,13 +176,25 @@ char	*ft_strdup(char *s);
 char	*ft_strjoin(char *s1, char *s2);
 void	*ft_safe_malloc(size_t size, int key, int exit_status, void *to_delete);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*get_path_from_map(char *line);
+char	*trim_spaces(char *line);
 char	**ft_split(const char *str, char c, int *words_nb);
 int		get_color_from_map(char *line);
 void	check_path_exist(char *path);
 void	ft_bzero(void *s, size_t n);
 void	init_game_data(t_game *game);
 int		ft_count_char(char *str, char c, int reps);
+void	check_all_instructions_are_before_map(t_game *game);
+void	parse_instructions(t_game *game, char *cursor);
+void	parse_north_texture(char *cursor, t_game *game);
+void	parse_south_texture(char *cursor, t_game *game);
+void	parse_west_texture(char *cursor, t_game *game);
+void	parse_east_texture(char *cursor, t_game *game);
+void	parse_floor_color(char *cursor, t_game *game);
+void	parse_ceiling_color(char *cursor, t_game *game);
+bool	is_space(char *str);
+bool	is_not_space(char *str);
+bool	it_is_map(char *str);
+bool	is_only_white_spaces(char *str);
 
 //* randering
 // void	render_game(t_game *game);

@@ -23,8 +23,7 @@
 	3.2 => check if there is just 1 player
     3.1 => algo: loop over every ( 0 or player )character and check if the Neighbour char (up/down/left/right) of this 0 is not something else (1,0,player(N,S,W,E))
 		=> check if there is forbbiden characters
-		=> check if you found a \n after map and you found a nother line ( \n ) its error!
+		=> check if you found a '\n' after map and you found a nother line ( '\n' ) its error!
     3.2 => convert all spaces with 1 to make the map rectangular
 
 
-	//todo: fix double instractions 

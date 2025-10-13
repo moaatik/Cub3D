@@ -6,11 +6,39 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:20:08 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/10/02 23:19:10 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/13 15:01:25 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub.h"
+
+//* skip white spaces at the start of str
+char	*skip_white_spaces(char *str)
+{
+	while ((*str >= 9 && *str <= 13) || *str == 32)
+		str++;
+	return (str);
+}
+
+//* returns true if starts with NO, SO, WE, EA, F, or C.
+bool	is_instruction(char *str)
+{
+	return (
+		!ft_strncmp(str, "NO", 2)
+		|| !ft_strncmp(str, "SO", 2)
+		|| !ft_strncmp(str, "WE", 2)
+		|| !ft_strncmp(str, "EA", 2)
+		|| !ft_strncmp(str, "F", 1)
+		|| !ft_strncmp(str, "C", 1)
+	);
+}
+
+//* print a str in STDERR, free everything and exit.
+void	error_exit(char *str)
+{
+	ft_putstr_fd(str, 2);
+	ft_safe_malloc(0, FREE_ALL, 1, NULL);
+}
 
 //* calculate a str lenght
 int	ft_strlen(const char *s)
@@ -23,16 +51,39 @@ int	ft_strlen(const char *s)
 	return (i);
 }
 
-//* check if a str contain a whitspace
-int	is_space(char *str)
+//* check if a str contain a whit_spaces
+bool	is_space(char *str)
 {
 	while (*str)
 	{
 		if ((*str >= 9 && *str <= 13) || *str == 32)
-			return (1);
+			return (true);
 		str++;
 	}
-	return (0);
+	return (false);
+}
+
+//* check if a str doesn't contain a white_sapces
+bool	is_not_space(char *str)
+{
+	return ((*str < 9 || *str > 13) && *str != 32);
+}
+
+//* check if a str is only white spaces
+bool	is_only_white_spaces(char *str)
+{
+	while (*str)
+	{
+		if((*str < 9 || *str > 13) && *str != 32)
+			return (false);
+	}
+	return (true);
+}
+
+//* check if *str == 0 or 1 (which means it's a map)
+bool	it_is_map(char *str)
+{
+	return(*str == '0' || *str == '1');
 }
 
 //* converte ascii to integer + check if nb > 255
@@ -50,17 +101,6 @@ int	ft_atoi(char *str)
 			return (-1);
 	}
 	return ((int)nb);
-}
-
-//* compare 2 strings
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	int	i;
-
-	i = 0;
-	while (s1[i] && s2[i] && s1[i] == s2[i])
-		i++;
-	return (s1[i] - s2[i]);
 }
 
 //* print a string in a fd
@@ -159,6 +199,17 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
+//* compare 2 strings
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
+}
+
 //* make a str from a str using start and lenght
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
@@ -181,8 +232,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (str);
 }
 
-//* get the path from map + remove spaces
-char	*get_path_from_map(char *line)
+//* take a str and trip spaces at the start + end
+char	*trim_spaces(char *line)
 {
 	char	*str;
 	int		i;
@@ -201,6 +252,7 @@ char	*get_path_from_map(char *line)
 	return (str);
 }
 
+//*
 int	convert_rgb_from_str_to_int(char **rgb_strs)
 {
 	int	i;
@@ -209,7 +261,7 @@ int	convert_rgb_from_str_to_int(char **rgb_strs)
 	i = 0;
 	while (rgb_strs[i])
 	{
-		rgb_strs[i] = get_path_from_map(rgb_strs[i]);
+		rgb_strs[i] = trim_spaces(rgb_strs[i]);
 		if (is_space(rgb_strs[i]))
 		{
 				ft_putstr_fd("Error\nRGB is not correct!\n", 2);
@@ -235,7 +287,7 @@ int	get_color_from_map(char *line)
 	int		i;
 
 	i = 0;
-	color_str = get_path_from_map(line);
+	color_str = trim_spaces(line);
 	while (color_str[i])
 	{
 		if ((color_str[i] < '0' || color_str[i] > '9') && color_str[i] != ',' && (color_str[i] < 9 || color_str[i] > 13) && color_str[i] != 32)
@@ -254,6 +306,7 @@ int	get_color_from_map(char *line)
 	return (convert_rgb_from_str_to_int(rgb_strs)); //* it return a int ( converted from rgb str )
 }
 
+//*
 int	ft_count_char(char *str, char c, int reps)
 {
 	int	count;
@@ -310,6 +363,7 @@ void	check_path_exist(char *path)
 	close(fd);
 }
 
+//*
 void	init_game_data(t_game *game)
 {
 	ft_bzero(game, sizeof(*game));
@@ -317,24 +371,179 @@ void	init_game_data(t_game *game)
 	game->floor_color = -1;
 }
 
-//* copy the map from file (.cub) to 2D array
-// void	make_area(int fd, t_game *game)
-// {
-// 	char	**map;
-// 	char	*line;
-// 	int		i;
+//* parse north texture
+void	parse_north_texture(char *cursor, t_game *game)
+{
+	if (game->n_wall.path != NULL)
+		error_exit("Error\nDouble instructions\n");
+	cursor += 2;
+	if (is_not_space(cursor))
+		error_exit("Error\nInvalid texture identifier format\n");
+	game->n_wall.path = trim_spaces(cursor);
+	check_path_exist(game->n_wall.path);
+}
 
-// 	i = 0;
-// 	map = ft_safe_malloc(sizeof(char *) * (game->height + 1), ALLOCATE, 1, NULL);
-// 	line = get_next_line(fd);
-// 	while (line)
-// 	{
-// 		map[i] = ft_safe_malloc(sizeof(char) * (ft_strlen_map_check(line) + 1), ALLOCATE, 1, NULL);
-// 		ft_strcpy(map[i], line);
-// 		free(line);
-// 		i++;
-// 		line = get_next_line(fd);
-// 	}
-// 	map[i] = NULL;
-// 	game->map = map;
-// }
+//* parse south texture
+void	parse_south_texture(char *cursor, t_game *game)
+{
+	if (game->s_wall.path != NULL)
+		error_exit("Error\nDouble instructions\n");
+	cursor += 2;
+	if (is_not_space(cursor))
+		error_exit("Error\nInvalid texture identifier format\n");
+	game->s_wall.path = trim_spaces(cursor);
+	check_path_exist(game->s_wall.path);
+}
+
+//* parse west texture
+void	parse_west_texture(char *cursor, t_game *game)
+{
+	if (game->w_wall.path != NULL)
+		error_exit("Error\nDouble instructions\n");
+	cursor += 2;
+	if (is_not_space(cursor))
+		error_exit("Error\nInvalid texture identifier format\n");
+	game->w_wall.path = trim_spaces(cursor);
+	check_path_exist(game->w_wall.path);
+}
+
+//* parse east texture
+void	parse_east_texture(char *cursor, t_game *game)
+{
+	if (game->e_wall.path != NULL)
+		error_exit("Error\nDouble instructions\n");
+	cursor += 2;
+	if (is_not_space(cursor))
+		error_exit("Error\nInvalid texture identifier format\n");
+	game->e_wall.path = trim_spaces(cursor);
+	check_path_exist(game->e_wall.path);
+}
+
+//* parse floor color
+void	parse_floor_color(char *cursor, t_game *game)
+{
+	if (game->floor_color != -1)
+		error_exit("Error\nDouble instructions\n");
+	cursor++;
+	if (is_not_space(cursor))
+		error_exit("Error\nInvalid texture identifier format\n");
+	game->floor_color = get_color_from_map(cursor);
+}
+
+//* parse ceiling color
+void	parse_ceiling_color(char *cursor, t_game *game)
+{
+	if (game->ceiling_color != -1)
+		error_exit("Error\nDouble instructions\n");
+	cursor++;
+	if (is_not_space(cursor))
+		error_exit("Error\nInvalid texture identifier format\n");
+	game->ceiling_color = get_color_from_map(cursor);
+}
+
+//* parse instructions depends on its identifier
+void	parse_instructions(t_game *game, char *cursor)
+{
+	if (!ft_strncmp(cursor, "NO", 2))
+		parse_north_texture(cursor, game);
+	else if (!ft_strncmp(cursor, "SO", 2))
+		parse_south_texture(cursor, game);
+	else if (!ft_strncmp(cursor, "WE", 2))
+		parse_west_texture(cursor, game);
+	else if (!ft_strncmp(cursor, "EA", 2))
+		parse_east_texture(cursor, game);
+	else if (!ft_strncmp(cursor, "F", 1))
+		parse_floor_color(cursor, game);
+	else if (!ft_strncmp(cursor, "C", 1))
+		parse_ceiling_color(cursor, game);
+}
+
+//* check that all instructions are set before the map
+void	check_all_instructions_are_before_map(t_game *game)
+{
+	if (!game->n_wall.path
+		|| !game->s_wall.path
+		|| !game->w_wall.path
+		|| !game->e_wall.path
+		|| game->floor_color == -1
+		|| game->ceiling_color == -1)
+		error_exit("Error\nInstructions not found\n");
+}
+
+//* parse map block
+void	parse_map_block(int fd, char *cursor, t_game *game)
+{
+	(void) fd;
+	(void) cursor;
+	(void) game;
+	printf("parse of map block todo\n");
+	//todo: count the dimention of map
+	//todo: allocate 2D array for this map
+	//todo: copy it to this new 2D array
+	//todo: start work on it ( look at algo.c file for more infos )
+}
+
+
+/*
+//? Calculate map dimensions (width/height) from file
+static void	calculate_size(t_game *size, int fd)
+{
+	int		i;
+	char	*tmp;
+	
+	i = 1;
+	tmp = get_next_line(fd);
+	if (!tmp)
+	{
+		ft_putstr_fd("Error\nEmpty map file.\n", 2);
+		close(fd);
+		exit(1);
+	}
+	size->width = ft_strlen_map_check(tmp);
+	free(tmp);
+	tmp = get_next_line(fd);
+	while (tmp)
+	{
+		i++;
+		free(tmp);
+		tmp = get_next_line(fd);
+	}
+	size->height = i;
+	check_map_fits_screen(size, fd);
+}
+
+// * Calculate map dimensions (width/height) from .cub file
+void	calculate_map_size(t_game *game, int fd)
+{
+	int		i;
+	char	*tmp;
+	
+	i = 1;
+}
+
+// * copy the map from file (.cub) to 2D array
+void	make_area(int fd, t_game *game)
+{
+	char	**map;
+	char	*line;
+	int		i;
+	
+	i = 0;
+	map = ft_safe_malloc(sizeof(char *) * (game->height + 1), ALLOCATE, 1, NULL);
+	line = get_next_line(fd);
+	while (line)
+	{
+		map[i] = ft_safe_malloc(sizeof(char) * (ft_strlen_map_check(line) + 1), ALLOCATE, 1, NULL);
+		ft_strcpy(map[i], line);
+		free(line);
+		i++;
+		line = get_next_line(fd);
+	}
+	map[i] = NULL;
+	game->map = map;
+}
+
+*/
+
+
+//todo: go to mhousas to understand how you will impliment the map algo + how you will handle it

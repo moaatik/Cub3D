@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:02 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/26 10:54:55 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/12 11:18:30 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,16 @@ int main(int ac, char **av)
 
 	//* parsing
 	parse_map(ac, av, &game);
+
+		//? debuging: 
+	printf("everything is correct !\n");
+	printf("DATA:\n");
+	printf("NO => [%s]\n", game.n_wall.path);
+	printf("SO => [%s]\n", game.s_wall.path);
+	printf("WE => [%s]\n", game.w_wall.path);
+	printf("EA => [%s]\n", game.e_wall.path);
+	printf("F  => [%d]\n", game.floor_color);
+	printf("F  => [%d]\n", game.ceiling_color);
 
 	//* basic parsing
 	// game.map = input(av);
