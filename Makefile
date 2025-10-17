@@ -3,7 +3,7 @@ SRCS = main.c parsing/map_parsing.c parsing/parsing_utils.c parsing/ft_safe_mall
 OBJS = $(SRCS:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 NAME = cub3D
 

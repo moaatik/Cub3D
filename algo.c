@@ -10,7 +10,7 @@
     2.2 => check if the path of every texture is correct + exist + read permission//! done !
     2.3 => set the texture path from the file to a struct                         //! done !
     2.4 => do the same with all (NO, SO, WE, EA)                                  //! done !
-    2.5 => check if the RGB is ranged between 0 => 255 + just a 3 numbers + not 2 comas (not problem with wight spaces between them) //! done !
+    2.5 => check if the RGB is ranged between 0 => 255 + just a 3 numbers + not 2 comas (not problem with wight_spaces between them) //! done !
     2.6 => convert the RGB to int numbers (using betwise operators)               //! done !
 
 3 => parse the map:
@@ -25,5 +25,4 @@
 		=> check if there is forbbiden characters
 		=> check if you found a '\n' after map and you found a nother line ( '\n' ) its error!
     3.2 => convert all spaces with 1 to make the map rectangular
-
 

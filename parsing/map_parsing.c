@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:15:40 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/10/13 15:08:02 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/14 10:54:13 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	parse_map(int ac, char *av[], t_game *game)
 		else if (it_is_map(cursor))
 		{
 			check_all_instructions_are_before_map(game);
-            parse_map_block(fd, cursor, game); //todo:
+            parse_map_block(fd, line, game); //todo:
  			ft_safe_malloc(0, FREE_ONE, 1, line);
 			break;
 		}

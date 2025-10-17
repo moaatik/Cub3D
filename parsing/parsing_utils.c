@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:20:08 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/10/13 15:01:25 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/16 15:20:42 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -471,18 +471,37 @@ void	check_all_instructions_are_before_map(t_game *game)
 }
 
 //* parse map block
-void	parse_map_block(int fd, char *cursor, t_game *game)
+void	parse_map_block(int fd, char *line, t_game *game)
 {
-	(void) fd;
-	(void) cursor;
-	(void) game;
-	printf("parse of map block todo\n");
+
+	count_map_dimention(fd, line, game);
+	// copy_map_from_file_to_matrix();
 	//todo: count the dimention of map
 	//todo: allocate 2D array for this map
 	//todo: copy it to this new 2D array
 	//todo: start work on it ( look at algo.c file for more infos )
 }
 
+//* count the dimention of map
+void	count_map_dimention(int fd, char *line, t_game *game)
+{
+	(void)line;
+	char	*tmp;
+
+	game->map.height = 1;
+	tmp = get_next_line(fd);
+	while (tmp)
+	{
+		game->map.height++;
+		ft_safe_malloc(0, FREE_ONE, 1, tmp);
+		tmp = get_next_line(fd);
+	}
+	ft_safe_malloc(sizeof(char *) * game->map.height, ALLOCATE, 1, NULL);
+	
+	
+
+	//todo: read what chat gpt do then come here
+}
 
 /*
 //? Calculate map dimensions (width/height) from file
@@ -544,6 +563,3 @@ void	make_area(int fd, t_game *game)
 }
 
 */
-
-
-//todo: go to mhousas to understand how you will impliment the map algo + how you will handle it

@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/10/13 14:59:58 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/14 20:12:08 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,7 @@ bool	is_space(char *str);
 bool	is_not_space(char *str);
 bool	it_is_map(char *str);
 bool	is_only_white_spaces(char *str);
+void	count_map_dimention(int fd, char *line, t_game *game);
 
 //* randering
 // void	render_game(t_game *game);

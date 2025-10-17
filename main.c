@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:02 by moaatik           #+#    #+#             */
-/*   Updated: 2025/10/12 11:18:30 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/15 18:50:52 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ int main(int ac, char **av)
 	printf("EA => [%s]\n", game.e_wall.path);
 	printf("F  => [%d]\n", game.floor_color);
 	printf("F  => [%d]\n", game.ceiling_color);
+	printf("map heigh => [%d]\n", game.map.height);
+	printf("map width = [%d]\n", game.map.width);
 
 	//* basic parsing
 	// game.map = input(av);
@@ -117,6 +119,3 @@ int main(int ac, char **av)
 }
 
 //todo; understand why we convert from rgb to int
-//todo: push your updates !
-//todo: copy the video from pc to your phone
-//todo: stor the RGB in char not int ( befor you convert it to one int => just for memory opetimization )
