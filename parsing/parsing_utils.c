@@ -252,7 +252,7 @@ char	*trim_spaces(char *line)
 	return (str);
 }
 
-//*
+//* convert rgb from 2D array to one int
 int	convert_rgb_from_str_to_int(char **rgb_strs)
 {
 	int	i;
@@ -306,7 +306,7 @@ int	get_color_from_map(char *line)
 	return (convert_rgb_from_str_to_int(rgb_strs)); //* it return a int ( converted from rgb str )
 }
 
-//*
+//* count how many times a char repeated
 int	ft_count_char(char *str, char c, int reps)
 {
 	int	count;
@@ -336,16 +336,6 @@ int	check_map_exists(char *map_file)
 		ft_putstr_fd("Error\nMap file not found or inaccessible.\n", 2);
 		ft_safe_malloc(0, FREE_ALL, 1, NULL);
 	}
-	// calculate_size(game, fd);
-	// close(fd);
-	// fd = open(map_file, O_RDONLY);
-	// if (fd == -1)
-	// {
-	// 	ft_putstr_fd("Error\nMap file not found or inaccessible.\n", 2);
-	// 	exit(1);
-	// }
-	// make_area(fd, game);
-	// close(fd);
 	return (fd);
 }
 
@@ -363,7 +353,7 @@ void	check_path_exist(char *path)
 	close(fd);
 }
 
-//*
+//* init game struct
 void	init_game_data(t_game *game)
 {
 	ft_bzero(game, sizeof(*game));
@@ -473,34 +463,57 @@ void	check_all_instructions_are_before_map(t_game *game)
 //* parse map block
 void	parse_map_block(int fd, char *line, t_game *game)
 {
+	(void)game;
+	t_list	*map_list;
 
-	count_map_dimention(fd, line, game);
-	// copy_map_from_file_to_matrix();
-	//todo: count the dimention of map
-	//todo: allocate 2D array for this map
-	//todo: copy it to this new 2D array
-	//todo: start work on it ( look at algo.c file for more infos )
+	map_list = convert_map_from_file_to_linked_list(fd, line);
+	while (map_list)
+	{
+		printf("lin = [%s]\n", map_list->line);
+		printf("length = [%d]\n", map_list->length);
+		map_list = map_list->next;
+	}
+	
 }
 
-//* count the dimention of map
-void	count_map_dimention(int fd, char *line, t_game *game)
+t_list	*convert_map_from_file_to_linked_list(int	fd, char *first_line)
 {
-	(void)line;
-	char	*tmp;
+	char	*line;
+	t_list	*map_list;
 
-	game->map.height = 1;
-	tmp = get_next_line(fd);
-	while (tmp)
+	map_list = NULL;
+	ft_add_back(&map_list, first_line);
+	line = get_next_line(fd);
+	while (line)
 	{
-		game->map.height++;
-		ft_safe_malloc(0, FREE_ONE, 1, tmp);
-		tmp = get_next_line(fd);
+		ft_add_back(&map_list, line);
+		line = get_next_line(fd);
 	}
-	ft_safe_malloc(sizeof(char *) * game->map.height, ALLOCATE, 1, NULL);
-	
-	
+	return (map_list);
+}
 
-	//todo: read what chat gpt do then come here
+void	ft_add_back(t_list **head, char *line)
+{
+	t_list	*new_node;
+
+	new_node = ft_safe_malloc(sizeof(t_list), ALLOCATE, 1, NULL);
+	new_node->line = ft_get_line_without_new_line(line);
+	new_node->length = ft_strlen(new_node->line);
+	if (!*head)
+		*head = new_node;
+	else
+	{
+		while ((*head)->next)
+			*head = (*head)->next;
+		(*head)->next = new_node;
+	}
+}
+
+char	*ft_get_line_without_new_line(char *str)
+{
+	if (str[ft_strlen(str) - 1] == '\n')
+		return (ft_substr(str, 0, ft_strlen(str) - 2));
+	return (NULL);
 }
 
 /*

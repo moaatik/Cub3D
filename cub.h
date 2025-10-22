@@ -56,6 +56,14 @@ typedef struct s_mem_node
 	struct s_mem_node	*next;
 }						t_mem_node;
 
+//* a struct of linked_list of lines of map
+typedef	struct s_list
+{
+	char	*line;
+	int		length;
+	struct s_list	*next;
+}	t_list;
+
 //* enum of instructions
 typedef enum e_instructions_type
 {
@@ -195,7 +203,10 @@ bool	is_space(char *str);
 bool	is_not_space(char *str);
 bool	it_is_map(char *str);
 bool	is_only_white_spaces(char *str);
-void	count_map_dimention(int fd, char *line, t_game *game);
+void	ft_add_back(t_list **head, char *line);
+char	*ft_get_line_without_new_line(char *str);
+t_list	*convert_map_from_file_to_linked_list(int	fd, char *first_line);
+
 
 //* randering
 // void	render_game(t_game *game);
