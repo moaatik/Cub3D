@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/10/22 15:33:14 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/22 17:39:43 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,10 @@ t_list	*convert_map_from_file_to_linked_list(int	fd, char *first_line);
 int		ft_lstsize(t_list *list);
 char	**convert_linked_list_to_matrix(t_list *list, t_game *game);
 bool	is_space(char c);
+void	check_map_border(t_game *game);
+void	validate_map(t_game *game);
+void	check_one_player(t_game *game);
+bool	is_player(char c);
 
 //* randering
 // void	render_game(t_game *game);

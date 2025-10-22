@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:20:08 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/10/22 15:50:48 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:07:01 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -469,7 +469,7 @@ void	parse_map_block(int fd, char *line, t_game *game)
 	map_list = convert_map_from_file_to_linked_list(fd, line);
 	game->map.map_matrix = convert_linked_list_to_matrix(map_list, game);
 	//todo: 4️⃣ Validate map
-	// validate_map(game); //todo:
+	validate_map(game); //todo:
 	
 }
 
@@ -524,7 +524,7 @@ char	*ft_get_line_without_new_line(char *str)
 	int	i;
 
 	i = ft_strlen(str);
-	i--; //todo: print what does str[i] contain (it should contain '\0')
+	i--;
 	while (is_space(str[i]) && i > 0)
 		i--;
 	return (ft_substr(str, 0, i + 1));
@@ -569,7 +569,45 @@ int	ft_lstsize(t_list *list)
 //* check if map is valid (check neigboors)
 void	validate_map(t_game *game)
 {
-	//todo:
+	check_map_border(game);
+	check_one_player(game);
+}
+
+//* check if there is just 1 player
+void	check_one_player(t_game *game)
+{
+	char	**map;
+	int		y;
+	int		x;
+	int		player_counter;
+
+	player_counter = 0;
+	y = 0;
+	map = game->map.map_matrix;
+	while (map[y])
+	{
+		x = 0;
+		while (map[y][x])
+		{
+			if (is_player(map[y][x]))
+			{
+				player_counter++;
+				game->player.x = x;
+				game->player.y = y;
+				// game->player.dir = map[y][x];
+			}
+			x++;
+		}
+		y++;
+	}
+	if (player_counter != 1)
+		error_exit("Error\nMap must contain exactly one player\n");
+}
+
+//* check if a char is player(N,S,W,E)
+bool	is_player(char c)
+{
+	return (c == 'N' || c == 'S' || c == 'W' || c == 'E');
 }
 
 //* check if a char is white_spaces
@@ -577,6 +615,34 @@ bool	is_space(char c)
 {
 	return ((c >= 9 && c <= 13) || c == 32);
 }
+
+//* check the first + last line => they must be 1 or space
+void	check_map_border(t_game *game)
+{
+	char	**map;
+	int		y;
+	int		x;
+
+	y = 0;
+	x = 0;
+	map = game->map.map_matrix;
+	while (map[y][x])
+	{
+		if (map[y][x] != '0' && map[y][x] != '1' && !is_space(map[y][x]))
+			error_exit("Errro\nmap border are not correct\n");
+		x++;
+	}
+	while (map[y + 1])
+		y++;
+	x = 0;
+	while (map[y][x])
+	{
+		if (map[y][x] != '0' && map[y][x] != '1' && !is_space(map[y][x]))
+			error_exit("Errro\nmap border are not correct\n");
+		x++;
+	}
+}
+
 /*
 //? Calculate map dimensions (width/height) from file
 static void	calculate_size(t_game *size, int fd)
