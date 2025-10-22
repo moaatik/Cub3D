@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/10/14 20:12:08 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/22 10:19:32 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ bool	is_instruction(char *str);
 char	*skip_white_spaces(char *str);
 void    parse_map(int ac, char *av[], t_game *game);
 void	check_map_extension(char *map_name);
+void	check_path_exist(char *path);
 int		check_map_exists(char *map_file);
 char	*get_next_line(int fd);
 int		ft_strlen(const char *s);
@@ -187,7 +188,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*trim_spaces(char *line);
 char	**ft_split(const char *str, char c, int *words_nb);
 int		get_color_from_map(char *line);
-void	check_path_exist(char *path);
 void	ft_bzero(void *s, size_t n);
 void	init_game_data(t_game *game);
 int		ft_count_char(char *str, char c, int reps);

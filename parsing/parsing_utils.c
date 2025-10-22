@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:20:08 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/10/16 15:20:42 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/22 10:59:03 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ bool	is_only_white_spaces(char *str)
 	{
 		if((*str < 9 || *str > 13) && *str != 32)
 			return (false);
+		str++;
 	}
 	return (true);
 }
@@ -467,53 +468,60 @@ void	parse_map_block(int fd, char *line, t_game *game)
 	t_list	*map_list;
 
 	map_list = convert_map_from_file_to_linked_list(fd, line);
-	while (map_list)
-	{
-		printf("lin = [%s]\n", map_list->line);
-		printf("length = [%d]\n", map_list->length);
-		map_list = map_list->next;
-	}
-	
+	//todo: 3️⃣ Convert linked list to 2D array
 }
 
+//* read the map from fd and store it in a linked list
 t_list	*convert_map_from_file_to_linked_list(int	fd, char *first_line)
 {
 	char	*line;
 	t_list	*map_list;
+	bool	empty_line;
 
 	map_list = NULL;
+	empty_line = false;
 	ft_add_back(&map_list, first_line);
 	line = get_next_line(fd);
 	while (line)
 	{
-		ft_add_back(&map_list, line);
+		if (is_only_white_spaces(line))
+			empty_line = true;
+		else
+			ft_add_back(&map_list, line);
+		ft_safe_malloc(0, FREE_ONE, 1, line);
 		line = get_next_line(fd);
 	}
+	if (empty_line)
+		error_exit("Error\nMap is not the last element in file\n");
 	return (map_list);
 }
 
+//* create and add a new node to t_list linked list
 void	ft_add_back(t_list **head, char *line)
 {
 	t_list	*new_node;
+	t_list	*tmp_head;
 
+	tmp_head = *head;
 	new_node = ft_safe_malloc(sizeof(t_list), ALLOCATE, 1, NULL);
-	new_node->line = ft_get_line_without_new_line(line); //todo: I think that there is an error here ! it cut one more char
+	new_node->line = ft_get_line_without_new_line(line);
 	new_node->length = ft_strlen(new_node->line);
 	if (!*head)
 		*head = new_node;
 	else
 	{
-		while ((*head)->next)
-			*head = (*head)->next;
-		(*head)->next = new_node;
+		while (tmp_head->next)
+			tmp_head = tmp_head->next;
+		tmp_head->next = new_node;
 	}
 }
 
+//* take a str and return it without '\n' at the end
 char	*ft_get_line_without_new_line(char *str)
 {
 	if (str[ft_strlen(str) - 1] == '\n')
-		return (ft_substr(str, 0, ft_strlen(str) - 2));
-	return (NULL);
+		return (ft_substr(str, 0, ft_strlen(str) - 1));
+	return (ft_strdup(str));
 }
 
 /*
