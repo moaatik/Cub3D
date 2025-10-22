@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/10/22 10:19:32 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/22 11:52:46 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ typedef enum e_instructions_type
 
 typedef struct s_map
 {
-	char	**map;
+	char	**map_matrix;
 	int		height;
 	int		width;
 }		t_map;
@@ -147,7 +147,7 @@ typedef struct	s_game
 	t_cast		cast;
 	
 	t_map		map;
-	// char		**map;
+	// char		**map; //* it was used by "ktami" to stor the map matrix (it's useless now)
 	int			max_x;
 	int			max_y;
 
@@ -206,6 +206,8 @@ bool	is_only_white_spaces(char *str);
 void	ft_add_back(t_list **head, char *line);
 char	*ft_get_line_without_new_line(char *str);
 t_list	*convert_map_from_file_to_linked_list(int	fd, char *first_line);
+int		ft_lstsize(t_list *list);
+char	**convert_linked_list_to_matrix(t_list *list, t_game *game);
 
 
 //* randering

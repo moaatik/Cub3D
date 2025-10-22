@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:20:08 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/10/22 10:59:03 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/22 12:04:13 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -464,11 +464,13 @@ void	check_all_instructions_are_before_map(t_game *game)
 //* parse map block
 void	parse_map_block(int fd, char *line, t_game *game)
 {
-	(void)game;
 	t_list	*map_list;
 
 	map_list = convert_map_from_file_to_linked_list(fd, line);
-	//todo: 3️⃣ Convert linked list to 2D array
+	game->map.map_matrix = convert_linked_list_to_matrix(map_list, game);
+	//todo: 4️⃣ Validate map
+	validate_map(game->map.map_matrix); //todo:
+	
 }
 
 //* read the map from fd and store it in a linked list
@@ -523,6 +525,43 @@ char	*ft_get_line_without_new_line(char *str)
 		return (ft_substr(str, 0, ft_strlen(str) - 1));
 	return (ft_strdup(str));
 }
+
+//* convert the linked list to matrix
+char	**convert_linked_list_to_matrix(t_list *list, t_game *game)
+{
+	char	**map_matrix;
+	int		y;
+	int		x;
+	int		height;
+
+	y = 0;
+	x = 0;
+	height = ft_lstsize(list);
+	game->map.height = height;
+	map_matrix = ft_safe_malloc(height * sizeof(char *) + 1, ALLOCATE, 1, NULL);
+	while (y < height)
+	{
+		map_matrix[y++] = list->line;
+		list = list->next;
+	}
+	map_matrix[y] = NULL;
+	return (map_matrix);
+}
+
+//* count how many node in t_list
+int	ft_lstsize(t_list *list)
+{
+	int	i;
+
+	i = 0;
+	while (list)
+	{
+		i++;
+		list = list->next;
+	}
+	return (i);
+}
+
 
 /*
 //? Calculate map dimensions (width/height) from file

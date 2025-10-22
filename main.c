@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:02 by moaatik           #+#    #+#             */
-/*   Updated: 2025/10/22 08:05:01 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/22 12:03:47 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,12 @@ int main(int ac, char **av)
 	printf("F  => [%d]\n", game.ceiling_color);
 	printf("map heigh => [%d]\n", game.map.height);
 	printf("map width = [%d]\n", game.map.width);
+	printf("\n==== map block ====\n\n");
+	while (*game.map.map_matrix)
+	{
+		printf("[%s]\n", *game.map.map_matrix++);
+	}
+	
 
 	//* basic parsing
 	// game.map = input(av);

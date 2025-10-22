@@ -1,17 +1,14 @@
-# this is a valide map
 
-
-
-WE textures/d_wall.xpm
+WE ./textures/MARBFACE.xpm
 F  255,255  ,   255    
 
-SO textures/d_wall.xpm
+SO ./textures/MARBFAC3.xpm
 
 
-  EA             textur es/d_wall.xpm                     
+  EA             ./textures/MARBLE1.xpm                     
 
                   C 0,0,    00000000000000255
-NO textures/d_wall.xpm
+NO ./textures/MARBFAC2.xpm
 
     1111111111111111111
         100000100000001
@@ -106,9 +103,3 @@ NO textures/d_wall.xpm
                         11101010111110111011111010111111101010001
                         10001010100000100000001010100000100010101
                         11111111111111111111111111111111111111111
-
-
-
-
-
-
