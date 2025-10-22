@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:20:08 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/10/22 12:04:13 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/22 15:50:48 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	ft_strlen(const char *s)
 }
 
 //* check if a str contain a whit_spaces
-bool	is_space(char *str)
+bool	str_is_space(char *str)
 {
 	while (*str)
 	{
@@ -247,9 +247,9 @@ char	*trim_spaces(char *line)
 	i--;
 	while ((line[i] >= 9 && line[i] <= 13) || line[i] == 32)
 		i--;
-	
+
 	str = ft_substr(line, 0, i + 1);
-	
+
 	return (str);
 }
 
@@ -263,7 +263,7 @@ int	convert_rgb_from_str_to_int(char **rgb_strs)
 	while (rgb_strs[i])
 	{
 		rgb_strs[i] = trim_spaces(rgb_strs[i]);
-		if (is_space(rgb_strs[i]))
+		if (str_is_space(rgb_strs[i]))
 		{
 				ft_putstr_fd("Error\nRGB is not correct!\n", 2);
 				ft_safe_malloc(0, FREE_ALL, 1, NULL);
@@ -469,7 +469,7 @@ void	parse_map_block(int fd, char *line, t_game *game)
 	map_list = convert_map_from_file_to_linked_list(fd, line);
 	game->map.map_matrix = convert_linked_list_to_matrix(map_list, game);
 	//todo: 4️⃣ Validate map
-	validate_map(game->map.map_matrix); //todo:
+	// validate_map(game); //todo:
 	
 }
 
@@ -521,9 +521,13 @@ void	ft_add_back(t_list **head, char *line)
 //* take a str and return it without '\n' at the end
 char	*ft_get_line_without_new_line(char *str)
 {
-	if (str[ft_strlen(str) - 1] == '\n')
-		return (ft_substr(str, 0, ft_strlen(str) - 1));
-	return (ft_strdup(str));
+	int	i;
+
+	i = ft_strlen(str);
+	i--; //todo: print what does str[i] contain (it should contain '\0')
+	while (is_space(str[i]) && i > 0)
+		i--;
+	return (ft_substr(str, 0, i + 1));
 }
 
 //* convert the linked list to matrix
@@ -562,7 +566,17 @@ int	ft_lstsize(t_list *list)
 	return (i);
 }
 
+//* check if map is valid (check neigboors)
+void	validate_map(t_game *game)
+{
+	//todo:
+}
 
+//* check if a char is white_spaces
+bool	is_space(char c)
+{
+	return ((c >= 9 && c <= 13) || c == 32);
+}
 /*
 //? Calculate map dimensions (width/height) from file
 static void	calculate_size(t_game *size, int fd)

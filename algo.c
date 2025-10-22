@@ -14,9 +14,9 @@
     2.6 => convert the RGB to int numbers (using betwise operators)               //! done !
 
 3 => parse the map:
-	3.1 => count the lenght + high of map to allocate enough space for it. (2D array)
-		=> skip whitespaces at the end
-		=> addvice => when you get the line using ft_strdup(). cut the '\n' from the end of the str
+	3.1 => count the lenght + high of map to allocate enough space for it. (2D array) //! done !
+		=> skip whitespaces at the end                                                //todo
+		=> addvice => when you get the line using ft_strdup(). cut the '\n' from the end of the str //! done !
 	3.1 => check if the bounds are closed by 1 or space //todo ( in progress )
 		=> check the first + last line => they must be 1 or space
 		=> check the border of map     => they must be 1

@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/10/22 11:52:46 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/22 15:33:14 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ void	parse_west_texture(char *cursor, t_game *game);
 void	parse_east_texture(char *cursor, t_game *game);
 void	parse_floor_color(char *cursor, t_game *game);
 void	parse_ceiling_color(char *cursor, t_game *game);
-bool	is_space(char *str);
+bool	str_is_space(char *str);
 bool	is_not_space(char *str);
 bool	it_is_map(char *str);
 bool	is_only_white_spaces(char *str);
@@ -208,7 +208,7 @@ char	*ft_get_line_without_new_line(char *str);
 t_list	*convert_map_from_file_to_linked_list(int	fd, char *first_line);
 int		ft_lstsize(t_list *list);
 char	**convert_linked_list_to_matrix(t_list *list, t_game *game);
-
+bool	is_space(char c);
 
 //* randering
 // void	render_game(t_game *game);
