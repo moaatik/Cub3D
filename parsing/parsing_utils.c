@@ -497,7 +497,7 @@ void	ft_add_back(t_list **head, char *line)
 	t_list	*new_node;
 
 	new_node = ft_safe_malloc(sizeof(t_list), ALLOCATE, 1, NULL);
-	new_node->line = ft_get_line_without_new_line(line);
+	new_node->line = ft_get_line_without_new_line(line); //todo: I think that there is an error here ! it cut one more char
 	new_node->length = ft_strlen(new_node->line);
 	if (!*head)
 		*head = new_node;
