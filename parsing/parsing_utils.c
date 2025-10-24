@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:20:08 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/10/22 18:07:01 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/23 10:57:13 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -468,8 +468,7 @@ void	parse_map_block(int fd, char *line, t_game *game)
 
 	map_list = convert_map_from_file_to_linked_list(fd, line);
 	game->map.map_matrix = convert_linked_list_to_matrix(map_list, game);
-	//todo: 4️⃣ Validate map
-	validate_map(game); //todo:
+	validate_map(game); 	//todo: 4️⃣ Validate map
 	
 }
 
@@ -571,6 +570,7 @@ void	validate_map(t_game *game)
 {
 	check_map_border(game);
 	check_one_player(game);
+	// check_neigboors(game); //todo
 }
 
 //* check if there is just 1 player
@@ -592,9 +592,10 @@ void	check_one_player(t_game *game)
 			if (is_player(map[y][x]))
 			{
 				player_counter++;
-				game->player.x = x;
-				game->player.y = y;
-				// game->player.dir = map[y][x];
+				game->player.y = y * BLOCK_SIZE + BLOCK_SIZE / 2; //todo: you should understand why we multiply by Block_size
+				game->player.x = x * BLOCK_SIZE + BLOCK_SIZE / 2;
+				Set_direction_vector(game, map[y][x]);
+				map[y][x] = '0';
 			}
 			x++;
 		}
@@ -602,6 +603,31 @@ void	check_one_player(t_game *game)
 	}
 	if (player_counter != 1)
 		error_exit("Error\nMap must contain exactly one player\n");
+}
+
+//* set the palyer the player’s facing direction
+void	Set_direction_vector(t_game *game, char player_position) //todo: you should understand this fun well!
+{
+	if (player_position == 'N')
+	{
+		game->player.dir_x = 0;
+		game->player.dir_y = -1;
+	}
+	else if (player_position == 'S')
+	{
+		game->player.dir_x = 0;
+		game->player.dir_y = 1;
+	}
+	else if (player_position == 'W')
+	{
+		game->player.dir_x = -1;
+		game->player.dir_y = 0;
+	}
+	else if (player_position == 'E')
+	{
+		game->player.dir_x = 1;
+		game->player.dir_y = 0;
+	}
 }
 
 //* check if a char is player(N,S,W,E)

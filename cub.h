@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/10/22 17:39:43 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/23 13:36:08 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,8 +148,8 @@ typedef struct	s_game
 	
 	t_map		map;
 	// char		**map; //* it was used by "ktami" to stor the map matrix (it's useless now)
-	int			max_x;
-	int			max_y;
+	// int		max_x; //* it was used by "ktami" to stor the map width (I stor it in t_map)
+	// int		max_y; //* it was used by "ktami" to stor the map heigh (I stor it in t_map)
 
 	int			side;
 
@@ -213,6 +213,7 @@ void	check_map_border(t_game *game);
 void	validate_map(t_game *game);
 void	check_one_player(t_game *game);
 bool	is_player(char c);
+void	Set_direction_vector(t_game *game, char player_position);
 
 //* randering
 // void	render_game(t_game *game);
