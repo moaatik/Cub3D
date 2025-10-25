@@ -468,7 +468,7 @@ void	parse_map_block(int fd, char *line, t_game *game)
 
 	map_list = convert_map_from_file_to_linked_list(fd, line);
 	game->map.map_matrix = convert_linked_list_to_matrix(map_list, game);
-	validate_map(game); 	//todo: 4️⃣ Validate map
+	validate_map(game); 	//todo: 4️ Validate map
 	
 }
 
@@ -534,16 +534,17 @@ char	**convert_linked_list_to_matrix(t_list *list, t_game *game)
 {
 	char	**map_matrix;
 	int		y;
-	int		x;
 	int		height;
 
 	y = 0;
-	x = 0;
 	height = ft_lstsize(list);
 	game->map.height = height;
+	game->map.width = list->length;
 	map_matrix = ft_safe_malloc(height * sizeof(char *) + 1, ALLOCATE, 1, NULL);
 	while (y < height)
 	{
+		if (list->length > game->map.width)
+			game->map.width = list->length;
 		map_matrix[y++] = list->line;
 		list = list->next;
 	}
