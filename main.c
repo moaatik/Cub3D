@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:02 by moaatik           #+#    #+#             */
-/*   Updated: 2025/10/23 14:19:02 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/29 11:24:59 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,3 +128,7 @@ int main(int ac, char **av)
 	// mlx_loop(game.mlx);
 	return (0);
 }
+
+//todo: check if you close the fd every time you exit!
+
+//todo: treat white_spaces as a not valid chars

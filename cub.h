@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/10/23 13:36:08 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/29 10:36:22 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,11 @@ void	validate_map(t_game *game);
 void	check_one_player(t_game *game);
 bool	is_player(char c);
 void	Set_direction_vector(t_game *game, char player_position);
+void	check_all_4_neighbors(int y, int x, t_game *game);
+void	check_neigboors(t_game *game);
+void	check_all_instructions_and_map_are_set(t_game *game);
+void	convert_map_to_rectangular(t_game *game);
+
 
 //* randering
 // void	render_game(t_game *game);

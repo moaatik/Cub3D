@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:20:08 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/10/23 10:57:13 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/29 11:34:02 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -461,6 +461,19 @@ void	check_all_instructions_are_before_map(t_game *game)
 		error_exit("Error\nInstructions not found\n");
 }
 
+//* check that all instructions are set
+void	check_all_instructions_and_map_are_set(t_game *game)
+{
+	if (!game->n_wall.path
+		|| !game->s_wall.path
+		|| !game->w_wall.path
+		|| !game->e_wall.path
+		|| game->floor_color == -1
+		|| game->ceiling_color == -1
+		|| !game->map.map_matrix)
+		error_exit("Error\nInstructions or map are not found\n");
+}
+
 //* parse map block
 void	parse_map_block(int fd, char *line, t_game *game)
 {
@@ -468,7 +481,7 @@ void	parse_map_block(int fd, char *line, t_game *game)
 
 	map_list = convert_map_from_file_to_linked_list(fd, line);
 	game->map.map_matrix = convert_linked_list_to_matrix(map_list, game);
-	validate_map(game); 	//todo: 4️ Validate map
+	validate_map(game); 	//todo: Validate map
 	
 }
 
@@ -571,7 +584,89 @@ void	validate_map(t_game *game)
 {
 	check_map_border(game);
 	check_one_player(game);
-	// check_neigboors(game); //todo
+	check_neigboors(game);
+	convert_map_to_rectangular(game); //todo
+}
+
+//* convert map to rectangular
+void	convert_map_to_rectangular(t_game *game)
+{
+	char	**map;
+	char	**rectangular_map;
+	int		y;
+	int		x;
+
+	y = -1;
+	map = game->map.map_matrix;
+	rectangular_map = ft_safe_malloc((sizeof(char *) * game->map.height) + 1, ALLOCATE, 1, NULL);
+	while (map[++y])
+		rectangular_map[y] = ft_safe_malloc(game->map.width, ALLOCATE, 1, NULL);
+	y = -1;
+	while (map[++y])
+	{
+		x = -1;
+		while (map[y][++x])
+		{
+			if (is_space(map[y][x]))
+			//? If I found a tab should I repace it with 4 of '1' or should I not accepte theme from the start ! 
+		}
+		
+	}
+	
+}
+
+//* check neighboors
+void	check_neigboors(t_game *game)
+{
+	int	y;
+	int	x;
+
+	y = 0;
+	while (game->map.map_matrix[y])
+	{
+		x = 0;
+		while (game->map.map_matrix[y][x])
+		{
+			if (game->map.map_matrix[y][x] == '0')
+				check_all_4_neighbors(y, x, game);
+			x++;
+		}
+		y++;
+	}
+}
+
+//* check all 4 neighbors
+void	check_all_4_neighbors(int y, int x, t_game *game)
+{
+	char	**map;
+
+	map = game->map.map_matrix;
+	if (y == 0 || !map[y + 1] || x == 0 || x >= ft_strlen(map[y]) - 1)
+		error_exit("Error\nMap is not closed\n");
+	if (x >= ft_strlen(map[y - 1]) || (map[y - 1][x] != '1' && map[y - 1][x] != '0'))
+	{
+		if (!is_space(map[y - 1][x]) && map[y - 1][x])
+			error_exit("Error\nForbidden character in map\n");
+		error_exit("Error\nMap is not closed\n");
+	}
+	if (x >= ft_strlen(map[y + 1]) || (map[y + 1][x] != '1' && map[y + 1][x] != '0'))
+	{
+		if (!is_space(map[y + 1][x]) && map[y + 1][x])
+			error_exit("Error\nForbidden character in map\n");
+		error_exit("Error\nMap is not closed\n");
+	}
+	if (x - 1 < 0 || (map[y][x - 1] != '1' && map[y][x - 1] != '0'))
+	{
+		if (!is_space(map[y][x - 1]) && map[y][x - 1])
+			error_exit("Error\nForbidden character in map\n");
+		error_exit("Error\nMap is not closed\n");
+	}
+	if (x + 1 >= ft_strlen(map[y]) || (map[y][x + 1] != '1' && map[y][x + 1] != '0'))
+	{
+		if (!is_space(map[y][x + 1]) && map[y][x + 1])
+			error_exit("Error\nForbidden character in map\n");
+		error_exit("Error\nMap is not closed\n");
+	}
 }
 
 //* check if there is just 1 player
@@ -643,7 +738,7 @@ bool	is_space(char c)
 	return ((c >= 9 && c <= 13) || c == 32);
 }
 
-//* check the first + last line => they must be 1 or space
+//* check the first + last line => they must be '1' or space
 void	check_map_border(t_game *game)
 {
 	char	**map;
@@ -655,7 +750,7 @@ void	check_map_border(t_game *game)
 	map = game->map.map_matrix;
 	while (map[y][x])
 	{
-		if (map[y][x] != '0' && map[y][x] != '1' && !is_space(map[y][x]))
+		if (map[y][x] != '1' && !is_space(map[y][x]))
 			error_exit("Errro\nmap border are not correct\n");
 		x++;
 	}
@@ -664,7 +759,7 @@ void	check_map_border(t_game *game)
 	x = 0;
 	while (map[y][x])
 	{
-		if (map[y][x] != '0' && map[y][x] != '1' && !is_space(map[y][x]))
+		if (map[y][x] != '1' && !is_space(map[y][x]))
 			error_exit("Errro\nmap border are not correct\n");
 		x++;
 	}
@@ -730,3 +825,4 @@ void	make_area(int fd, t_game *game)
 }
 
 */
+
