@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:20:08 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/10/29 11:34:02 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/30 20:43:26 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -481,8 +481,7 @@ void	parse_map_block(int fd, char *line, t_game *game)
 
 	map_list = convert_map_from_file_to_linked_list(fd, line);
 	game->map.map_matrix = convert_linked_list_to_matrix(map_list, game);
-	validate_map(game); 	//todo: Validate map
-	
+	validate_map(game);
 }
 
 //* read the map from fd and store it in a linked list
@@ -585,7 +584,7 @@ void	validate_map(t_game *game)
 	check_map_border(game);
 	check_one_player(game);
 	check_neigboors(game);
-	convert_map_to_rectangular(game); //todo
+	convert_map_to_rectangular(game);
 }
 
 //* convert map to rectangular
@@ -596,23 +595,34 @@ void	convert_map_to_rectangular(t_game *game)
 	int		y;
 	int		x;
 
-	y = -1;
 	map = game->map.map_matrix;
-	rectangular_map = ft_safe_malloc((sizeof(char *) * game->map.height) + 1, ALLOCATE, 1, NULL);
-	while (map[++y])
-		rectangular_map[y] = ft_safe_malloc(game->map.width, ALLOCATE, 1, NULL);
+	rectangular_map = ft_safe_malloc(sizeof(char *) * (game->map.height + 1), ALLOCATE, 1, NULL);
 	y = -1;
-	while (map[++y])
+	while (++y < game->map.height)
 	{
+		rectangular_map[y] = ft_safe_malloc(sizeof(char) * (game->map.width + 1), ALLOCATE, 1, NULL);
 		x = -1;
-		while (map[y][++x])
+		while (++x < game->map.width)
 		{
-			if (is_space(map[y][x]))
-			//? If I found a tab should I repace it with 4 of '1' or should I not accepte theme from the start ! 
+			if (x < ft_strlen(map[y]) && (map[y][x] == '1' || map[y][x] == '0'))
+				rectangular_map[y][x] = map[y][x];
+			else
+				rectangular_map[y][x] = '1';
 		}
-		
 	}
-	
+	free_matrix(game->map.map_matrix);
+	game->map.map_matrix = rectangular_map;
+}
+
+//* free 2D array
+void	free_matrix(char **arr)
+{
+	int	y;
+
+	y = 0;
+	while (arr[y])
+		ft_safe_malloc(0, FREE_ONE, 1, arr[y++]);
+	ft_safe_malloc(0, FREE_ONE, 1, arr);
 }
 
 //* check neighboors
@@ -645,25 +655,25 @@ void	check_all_4_neighbors(int y, int x, t_game *game)
 		error_exit("Error\nMap is not closed\n");
 	if (x >= ft_strlen(map[y - 1]) || (map[y - 1][x] != '1' && map[y - 1][x] != '0'))
 	{
-		if (!is_space(map[y - 1][x]) && map[y - 1][x])
+		if (map[y - 1][x] != 32 && map[y - 1][x])
 			error_exit("Error\nForbidden character in map\n");
 		error_exit("Error\nMap is not closed\n");
 	}
 	if (x >= ft_strlen(map[y + 1]) || (map[y + 1][x] != '1' && map[y + 1][x] != '0'))
 	{
-		if (!is_space(map[y + 1][x]) && map[y + 1][x])
+		if (map[y + 1][x] != 32 && map[y + 1][x])
 			error_exit("Error\nForbidden character in map\n");
 		error_exit("Error\nMap is not closed\n");
 	}
 	if (x - 1 < 0 || (map[y][x - 1] != '1' && map[y][x - 1] != '0'))
 	{
-		if (!is_space(map[y][x - 1]) && map[y][x - 1])
+		if (map[y][x - 1] != 32 && map[y][x - 1])
 			error_exit("Error\nForbidden character in map\n");
 		error_exit("Error\nMap is not closed\n");
 	}
 	if (x + 1 >= ft_strlen(map[y]) || (map[y][x + 1] != '1' && map[y][x + 1] != '0'))
 	{
-		if (!is_space(map[y][x + 1]) && map[y][x + 1])
+		if (map[y][x + 1] != 32 && map[y][x + 1])
 			error_exit("Error\nForbidden character in map\n");
 		error_exit("Error\nMap is not closed\n");
 	}
@@ -701,8 +711,9 @@ void	check_one_player(t_game *game)
 		error_exit("Error\nMap must contain exactly one player\n");
 }
 
-//* set the palyer the player’s facing direction
-void	Set_direction_vector(t_game *game, char player_position) //todo: you should understand this fun well!
+//todo: you should understand this fun well!
+//* set the player’s facing direction
+void	Set_direction_vector(t_game *game, char player_position)
 {
 	if (player_position == 'N')
 	{
@@ -750,7 +761,7 @@ void	check_map_border(t_game *game)
 	map = game->map.map_matrix;
 	while (map[y][x])
 	{
-		if (map[y][x] != '1' && !is_space(map[y][x]))
+		if (map[y][x] != '1' && map[y][x] != 32)
 			error_exit("Errro\nmap border are not correct\n");
 		x++;
 	}
@@ -759,7 +770,7 @@ void	check_map_border(t_game *game)
 	x = 0;
 	while (map[y][x])
 	{
-		if (map[y][x] != '1' && !is_space(map[y][x]))
+		if (map[y][x] != '1' && map[y][x] != 32)
 			error_exit("Errro\nmap border are not correct\n");
 		x++;
 	}
@@ -825,4 +836,3 @@ void	make_area(int fd, t_game *game)
 }
 
 */
-

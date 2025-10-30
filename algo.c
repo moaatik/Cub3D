@@ -18,10 +18,10 @@
 		=> skip whitespaces at the end                                                //! done !
 		=> addvice => when you get the line using ft_strdup(). cut the '\n' from the end of the str //! done !
 	3.1 => check the first + last line => they must be '1' or space                   //! done !
-		=> check the border of map     => they must be '1'                              //* it will be handled by the algo!
+		=> check the border of map     => they must be '1'                            //! done !
 	3.2 => check if there is just 1 player                                            //! done !
     3.1 => algo: loop over every '0' char and check if the Neighbour char (up/down/left/right) of this '0' is not something else (1,0) //! done !
-		=> check if there is forbbiden characters                                     //* it will be handled by the algo!
+		=> check if there is forbbiden characters                                     //! done !
 		=> check if you found a '\n' after map and you found a nother line ( '\n' ) its error! //! done !
-    3.2 => convert all spaces with 1 to make the map rectangular                      //todo
+    3.2 => convert all spaces with 1 to make the map rectangular                      //! done !
 	3.3 => sotre the height + width of map                                            //! done !

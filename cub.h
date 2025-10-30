@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/10/29 10:36:22 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/10/29 11:46:25 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,7 @@ void	check_all_4_neighbors(int y, int x, t_game *game);
 void	check_neigboors(t_game *game);
 void	check_all_instructions_and_map_are_set(t_game *game);
 void	convert_map_to_rectangular(t_game *game);
+void	free_matrix(char **arr);
 
 
 //* randering
