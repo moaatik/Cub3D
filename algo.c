@@ -25,3 +25,10 @@
 		=> check if you found a '\n' after map and you found a nother line ( '\n' ) its error! //! done !
     3.2 => convert all spaces with 1 to make the map rectangular                      //! done !
 	3.3 => sotre the height + width of map                                            //! done !
+
+4 => Initialize MLX and load textures
+	=> Initialize MLX                                                                 //todo
+	=> Load your textures                                                             //todo
+
+=> //todo: check if you close the fd every time you exit!
+=> make a small gabage fds like the ft_safe_malloc() but this time for fds           //! done !

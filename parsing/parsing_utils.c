@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:20:08 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/10/30 20:43:26 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/11/03 10:53:47 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,18 +292,12 @@ int	get_color_from_map(char *line)
 	while (color_str[i])
 	{
 		if ((color_str[i] < '0' || color_str[i] > '9') && color_str[i] != ',' && (color_str[i] < 9 || color_str[i] > 13) && color_str[i] != 32)
-		{
-			ft_putstr_fd("Error\nRGB is not correct!\n", 2);
-			ft_safe_malloc(0, FREE_ALL, 1, NULL);
-		}
+			error_exit("Error\nRGB is not correct!\n");
 		i++;
 	}
 	rgb_strs = ft_split(color_str, ',', &words_nb);//* split RGB with ','
 	if (words_nb != 3 || ft_count_char(color_str, ',', 2)) //* check if there is just 3 RGB strs
-	{
-		ft_putstr_fd("Error\nRGB is not correct!\n", 2);
-		ft_safe_malloc(0, FREE_ALL, 1, NULL);
-	}
+		error_exit("Error\nRGB is not correct!\n");
 	return (convert_rgb_from_str_to_int(rgb_strs)); //* it return a int ( converted from rgb str )
 }
 
@@ -343,15 +337,12 @@ int	check_map_exists(char *map_file)
 //* check if the path exist + accessible
 void	check_path_exist(char *path)
 {
-	int	fd;
+	int	path_fd;
 
-	fd = open(path, O_RDONLY);
-	if (fd == -1)
-	{
-		ft_putstr_fd("Error\ntexture file not found or inaccessible.\n", 2);
-		ft_safe_malloc(0, FREE_ALL, 1, NULL);
-	}
-	close(fd);
+	path_fd = open(path, O_RDONLY);
+	if (path_fd == -1)
+		error_exit("Error\ntexture file not found or inaccessible.\n");
+	close(path_fd);
 }
 
 //* init game struct
@@ -485,7 +476,7 @@ void	parse_map_block(int fd, char *line, t_game *game)
 }
 
 //* read the map from fd and store it in a linked list
-t_list	*convert_map_from_file_to_linked_list(int	fd, char *first_line)
+t_list	*convert_map_from_file_to_linked_list(int fd, char *first_line)
 {
 	char	*line;
 	t_list	*map_list;

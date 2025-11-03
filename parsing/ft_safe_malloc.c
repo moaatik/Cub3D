@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 11:02:25 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/09/24 18:02:55 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/11/03 11:00:11 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@ void	ft_bzero(void *s, size_t len)
 		*tmp++ = 0;
 }
 
-//? Free all allocated memory in the memory tracking list and exit if
+//? Free all allocated memory in the memory tracking list and exit
 static void	free_mem_list(t_mem_node **list, int exit_status)
 {
 	t_mem_node	*tmp;
 
+	ft_open(NULL, 0, CLOSE_FDS);
 	while (*list)
 	{
 		tmp = (*list)->next;

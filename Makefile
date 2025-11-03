@@ -1,4 +1,4 @@
-SRCS = main.c parsing/map_parsing.c parsing/parsing_utils.c parsing/ft_safe_malloc.c parsing/get_next_line.c parsing/ft_split.c
+SRCS = main.c parsing/map_parsing.c parsing/parsing_utils.c parsing/ft_safe_malloc.c parsing/ft_open.c parsing/get_next_line.c parsing/ft_split.c
 
 OBJS = $(SRCS:.c=.o)
 

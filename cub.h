@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/10/29 11:46:25 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/11/03 10:54:13 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@
 //* macro for get_next_line
 #define BUFFER_SIZE 42
 
+//* Macros for ft_open keys:
+# define CREATE_FD 1
+# define CLOSE_FDS 0
+
 //* Macros for ft_safe_malloc keys:
 # define ALLOCATE 1
 # define FREE_ALL 0
@@ -55,6 +59,13 @@ typedef struct s_mem_node
 	void				*address;
 	struct s_mem_node	*next;
 }						t_mem_node;
+
+//* ft_open struct:
+typedef struct s_fds
+{
+	int				fd;
+	struct s_fds	*next;
+}					t_fds;
 
 //* a struct of linked_list of lines of map
 typedef	struct s_list
@@ -184,6 +195,7 @@ void	ft_strcopy(char *d, char* s);
 char	*ft_strdup(char *s);
 char	*ft_strjoin(char *s1, char *s2);
 void	*ft_safe_malloc(size_t size, int key, int exit_status, void *to_delete);
+int		ft_open(const char *file, int oflag, int key);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*trim_spaces(char *line);
 char	**ft_split(const char *str, char c, int *words_nb);

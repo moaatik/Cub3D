@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 15:45:14 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/09/25 11:11:01 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/11/03 08:16:31 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,5 @@ char	**ft_split(const char *str, char c, int *words_nb)
 	*words_nb = words_number;   //* Store the word count in the output variable.
 	words = ft_safe_malloc(sizeof(char *) * (words_number + 1), ALLOCATE, 1, NULL);  //* Allocate memory for the 2D array.
 	words[words_number] = NULL; //* Null-terminate the 2D array.
-	return (fill_string(words, str, c, words_number));  // Fill the 2D array with substrings.
+	return (fill_string(words, str, c, words_number));  //* Fill the 2D array with substrings.
 }
