@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/11/03 10:54:13 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/11/04 14:41:33 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,9 +174,7 @@ typedef struct	s_game
 	int			floor_color;
 }				t_game;
 
-//* parsing
-// char	**input(char **av);
-// void	get_map_info(t_game *game);
+//* parsing functions
 void	parse_map_block(int fd, char *cursor, t_game *game);
 void	error_exit(char *str);
 bool	is_instruction(char *str);

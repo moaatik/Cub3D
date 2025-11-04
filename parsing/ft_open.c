@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 08:17:18 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/11/03 10:45:58 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/11/04 16:09:03 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ static void	close_and_free_fds_list(t_fds **fds_header)
 		ft_safe_malloc(0, FREE_ONE, 1, *fds_header);
 		*fds_header = tmp;
 	}
-	*fds_header = NULL;
 }
 
 //* open an fd, track it, and handle failures safely.
@@ -61,10 +60,10 @@ int	ft_open(const char *file, int oflag, int key)
 	if (key == CREATE_FD)
 	{
 		if (!file)
-			error_exit("open failed");
+			error_exit("open failed\n");
 		fd = open(file, oflag);
 		if (fd == -1)
-			error_exit("open failed");
+			error_exit("open failed\n");
 		add_fd_to_list(&fds, fd);
 	}
 	else if (key == CLOSE_FDS)

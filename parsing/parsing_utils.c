@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:20:08 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/11/03 10:53:47 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/11/04 14:54:26 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -325,12 +325,7 @@ int	check_map_exists(char *map_file)
 {
 	int	fd;
 
-	fd = open(map_file, O_RDONLY);
-	if (fd == -1)
-	{
-		ft_putstr_fd("Error\nMap file not found or inaccessible.\n", 2);
-		ft_safe_malloc(0, FREE_ALL, 1, NULL);
-	}
+	fd = ft_open(map_file, O_RDONLY, CREATE_FD);
 	return (fd);
 }
 
@@ -339,9 +334,7 @@ void	check_path_exist(char *path)
 {
 	int	path_fd;
 
-	path_fd = open(path, O_RDONLY);
-	if (path_fd == -1)
-		error_exit("Error\ntexture file not found or inaccessible.\n");
+	path_fd = ft_open(path, O_RDONLY, CREATE_FD);
 	close(path_fd);
 }
 
@@ -408,7 +401,7 @@ void	parse_floor_color(char *cursor, t_game *game)
 		error_exit("Error\nDouble instructions\n");
 	cursor++;
 	if (is_not_space(cursor))
-		error_exit("Error\nInvalid texture identifier format\n");
+		error_exit("Error\nRGB is not correct!\n");
 	game->floor_color = get_color_from_map(cursor);
 }
 
@@ -419,7 +412,7 @@ void	parse_ceiling_color(char *cursor, t_game *game)
 		error_exit("Error\nDouble instructions\n");
 	cursor++;
 	if (is_not_space(cursor))
-		error_exit("Error\nInvalid texture identifier format\n");
+		error_exit("Error\nRGB is not correct!\n");
 	game->ceiling_color = get_color_from_map(cursor);
 }
 
