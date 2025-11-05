@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/11/04 14:41:33 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/11/05 12:14:37 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,15 +95,15 @@ typedef struct s_map
 
 typedef struct s_texture
 {
-	int		id;			//* identifier of the texture (NO/SO/WE/EA/F/C) /? does realy need it !?
-	char	*path;		//* path of the texture
-	void    *img;		//* return value of mlx_xpm_file_to_image
-	char    *address;	//* return value of mlx_get_data_addr
-	int     width;		//* inited by mlx_xpm_file_to_image()
-	int     height;		//* inited by mlx_xpm_file_to_image()
-	int     bpp;		//* inited by mlx_get_data_addr()
-	int     size_line;	//* inited by mlx_get_data_addr()
-	int     endian;		//* needed by mlx_get_data_addr() but not used!
+	int		id;			//? identifier of the texture (NO/SO/WE/EA/F/C) /? does realy need it !?
+	char	*path;		//? path of the texture
+	void    *img;		//? return value of mlx_xpm_file_to_image
+	char    *address;	//? return value of mlx_get_data_addr
+	int     width;		//? inited by mlx_xpm_file_to_image()
+	int     height;		//? inited by mlx_xpm_file_to_image()
+	int     bpp;		//? inited by mlx_get_data_addr()
+	int     size_line;	//? inited by mlx_get_data_addr()
+	int     endian;		//? needed by mlx_get_data_addr() but not used!
 }  			t_texture;
 
 typedef struct s_cast
@@ -199,7 +199,7 @@ char	*trim_spaces(char *line);
 char	**ft_split(const char *str, char c, int *words_nb);
 int		get_color_from_map(char *line);
 void	ft_bzero(void *s, size_t n);
-void	init_game_data(t_game *game);
+void	init_game_struct(t_game *game);
 int		ft_count_char(char *str, char c, int reps);
 void	check_all_instructions_are_before_map(t_game *game);
 void	parse_instructions(t_game *game, char *cursor);
@@ -229,6 +229,7 @@ void	check_neigboors(t_game *game);
 void	check_all_instructions_and_map_are_set(t_game *game);
 void	convert_map_to_rectangular(t_game *game);
 void	free_matrix(char **arr);
+void	MLX_data_init(t_game *game);
 
 
 //* randering

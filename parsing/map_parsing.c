@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:15:40 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/11/03 10:54:28 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/11/05 10:34:50 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	parse_map(int ac, char *av[], t_game *game)
 
 	check_map_extension(av[1]);
 	fd = check_map_exists(av[1]);
-	init_game_data(game);
+	init_game_struct(game);
 	line = get_next_line(fd);
 	while (line)
 	{
