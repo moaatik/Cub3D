@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:02 by moaatik           #+#    #+#             */
-/*   Updated: 2025/11/05 10:40:08 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/11/06 20:48:20 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int main(int ac, char **av)
 
 	//* parsing
 	parse_map(ac, av, &game);
-	data_init(); //todo
+	MLX_data_init(&game);
 
 
 

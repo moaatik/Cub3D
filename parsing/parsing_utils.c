@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:20:08 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/11/05 12:13:12 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/11/06 20:46:49 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -784,7 +784,7 @@ void	check_map_border(t_game *game)
 	}
 }
 
-//* init MLX ptr + window ptr
+//* init MLX ptr + window ptr + image ptr + get data addr
 void	MLX_data_init(t_game *game)
 {
 	game->mlx = mlx_init();
@@ -793,6 +793,12 @@ void	MLX_data_init(t_game *game)
 	game->window = mlx_new_window(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3D");
 	if (!game->window)
 		error_exit("mlx_new_window failed\n");
+	game->img = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+	if (!game->img)
+		error_exit("mlx_new_image failed\n");
+	game->address = mlx_get_data_addr(game->img, &game->bpp, &game->size_line, &game->endian);
+	if (!game->address)
+		error_exit("mlx_get_data_addr failed\n");
 }
 
 /*
