@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 18:18:37 by moaatik           #+#    #+#             */
-/*   Updated: 2025/10/03 10:54:32 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/11/07 15:45:54 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,16 @@ void	move_forward(t_game *game)
 	map_x = (int)(new_x) / BLOCK_SIZE;
 	map_y = (int)(game->player.y) / BLOCK_SIZE;
 
-	if (map_x < 0 || map_y < 0 || map_x >= game->max_x || map_y >= game->max_y)
+	if (map_x < 0 || map_y < 0 || map_x >= game->map.width || map_y >= game->map.height)
 		return ;
 
-	if (game->map[map_y][map_x] != '1')
+	if (game->map.map_matrix[map_y][map_x] != '1')
 		game->player.x = new_x;
 
 	map_x = (int)(game->player.x) / BLOCK_SIZE;
 	map_y = (int)(new_y) / BLOCK_SIZE;
 
-	if (game->map[map_y][map_x] != '1')
+	if (game->map.map_matrix[map_y][map_x] != '1')
 		game->player.y = new_y;
 }
 
@@ -51,16 +51,16 @@ void	move_backward(t_game *game)
 	map_x = (int)(new_x) / BLOCK_SIZE;
 	map_y = (int)(game->player.y) / BLOCK_SIZE;
 
-	if (map_x < 0 || map_y < 0 || map_x >= game->max_x || map_y >= game->max_y)
+	if (map_x < 0 || map_y < 0 || map_x >= game->map.width || map_y >= game->map.height)
 		return ;
 
-	if (game->map[map_y][map_x] != '1')
+	if (game->map.map_matrix[map_y][map_x] != '1')
 		game->player.x = new_x;
 
 	map_x = (int)(game->player.x) / BLOCK_SIZE;
 	map_y = (int)(new_y) / BLOCK_SIZE;
 
-	if (game->map[map_y][map_x] != '1')
+	if (game->map.map_matrix[map_y][map_x] != '1')
 		game->player.y = new_y;
 }
 
@@ -78,16 +78,16 @@ void move_right(t_game *game)
     map_x = (int)(new_x) / BLOCK_SIZE;
 	map_y = (int)(game->player.y) / BLOCK_SIZE;
 
-	if (map_x < 0 || map_y < 0 || map_x >= game->max_x || map_y >= game->max_y)
+	if (map_x < 0 || map_y < 0 || map_x >= game->map.width || map_y >= game->map.height)
 		return ;
 
-	if (game->map[map_y][map_x] != '1')
+	if (game->map.map_matrix[map_y][map_x] != '1')
 		game->player.x = new_x;
 
 	map_x = (int)(game->player.x) / BLOCK_SIZE;
 	map_y = (int)(new_y) / BLOCK_SIZE;
 
-	if (game->map[map_y][map_x] != '1')
+	if (game->map.map_matrix[map_y][map_x] != '1')
 		game->player.y = new_y;
 }
 
@@ -105,16 +105,16 @@ void move_left(t_game *game)
     map_x = (int)(new_x) / BLOCK_SIZE;
 	map_y = (int)(game->player.y) / BLOCK_SIZE;
 
-	if (map_x < 0 || map_y < 0 || map_x >= game->max_x || map_y >= game->max_y)
+	if (map_x < 0 || map_y < 0 || map_x >= game->map.width || map_y >= game->map.height)
 		return ;
 
-	if (game->map[map_y][map_x] != '1')
+	if (game->map.map_matrix[map_y][map_x] != '1')
 		game->player.x = new_x;
 
 	map_x = (int)(game->player.x) / BLOCK_SIZE;
 	map_y = (int)(new_y) / BLOCK_SIZE;
 
-	if (game->map[map_y][map_x] != '1')
+	if (game->map.map_matrix[map_y][map_x] != '1')
 		game->player.y = new_y;
 }
 

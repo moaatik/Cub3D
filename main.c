@@ -6,25 +6,12 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:02 by moaatik           #+#    #+#             */
-/*   Updated: 2025/10/03 09:33:07 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/11/07 15:49:05 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 
-void	ft_bzero(void *s, size_t n)
-{
-	size_t	i;
-	char	*ptr;
-
-	i = 0;
-	ptr = (char *)s;
-	while (i < n)
-	{
-		ptr[i] = 0;
-		i++;
-	}
-}
 
 int	ft_exit(t_game *game)
 {
@@ -34,7 +21,6 @@ int	ft_exit(t_game *game)
 	mlx_destroy_image(game->mlx, game->s_wall.img);
 	mlx_destroy_image(game->mlx, game->e_wall.img);
 	mlx_destroy_image(game->mlx, game->w_wall.img);
-	free_strs(game->map);
 	exit(0);
 	return (0);
 }
@@ -101,57 +87,12 @@ int update(t_game *game)
     return (0);
 }
 
-void load_texture(t_game *game, t_texture *texture, char *path)
-{
-    texture->img = mlx_xpm_file_to_image(game->mlx, path, &texture->width, &texture->height);
-    texture->address = mlx_get_data_addr(texture->img, &texture->bpp, &texture->size_line, &texture->endian);
-}
-
-int	init(t_game *game)
-{
-	load_texture(game, &game->n_wall, "textures/SP_DUDE1.xpm");
-	load_texture(game, &game->s_wall, "textures/MARBFAC3.xpm");
-	load_texture(game, &game->e_wall, "textures/SKULWAL3.xpm");
-	load_texture(game, &game->w_wall, "textures/STONGARG.xpm");
-	game->ceiling_color = 0x780010;
-	game->floor_color = 0x002000;
-	game->sprint = 1;
-	return (0);
-}
-
 int main(int ac, char **av)
 {
 	t_game	game;
 
-	(void)ac;
-
-	ft_bzero(&game, sizeof(t_game));
-
-	game.map = input(av);
-	if (!game.map)
-		return (1);
-
-	game.mlx = mlx_init();
-	if (!game.mlx)
-		return (1);
-
-	if (init(&game))
-		return (1);
-
-	get_map_info(&game);
-
-	game.window = mlx_new_window(game.mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3D");
-	if (!game.window)
-		return (1);
-	
-	game.img = mlx_new_image(game.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
-	if (!game.img)
-		return (1);
-
-	game.address = mlx_get_data_addr(game.img, &game.bpp, &game.size_line, &game.endian);
-	if (!game.address)
-		return (1);
-
+	parse_map(ac, av, &game);
+	game.player.rot_speed = 1;
 	render_game(&game);
 
 	mlx_hook(game.window, 2, 0, key_press, &game);
