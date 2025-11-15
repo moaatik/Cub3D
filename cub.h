@@ -6,7 +6,7 @@
 /*   By: moaatik <moaatik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 17:28:54 by moaatik           #+#    #+#             */
-/*   Updated: 2025/09/09 12:21:06 by moaatik          ###   ########.fr       */
+/*   Updated: 2025/10/02 10:38:01 by moaatik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@
 # endif
 
 # ifndef SPEED
-#  define SPEED 7
+#  define SPEED 3
 # endif
 
 # ifndef ROT_SPEED
-#  define ROT_SPEED 0.1
+#  define ROT_SPEED 0.05
 # endif
 
 # ifndef SCREEN_WIDTH
@@ -53,14 +53,20 @@ typedef struct s_texture
 
 typedef struct s_cast
 {
-	int     map_x;
-	int     map_y;
-	int     step_x;
-	int     step_y;
-	float	dist_x;
-	float	dist_y;
-	float	side_dist_x;
-	float	side_dist_y;
+	float	first_x;
+	float	first_y;
+
+	float step_x;
+	float step_y;
+
+	int	map_x;
+	int	map_y;
+
+	float side_dist_y;
+	float side_dist_x;
+
+	int	map_x_step;
+	int	map_y_step;	
 }  			t_cast;
 
 typedef struct s_ray
@@ -88,6 +94,17 @@ typedef struct s_player
 	float   rot_speed;
 }           t_player;
 
+typedef struct s_keys
+{
+	int   w;
+	int   a;
+	int   s;
+	int   d;
+	int   left;
+	int   right;
+	int   escape;
+}           t_keys;
+
 typedef struct	s_game
 {
 	void		*mlx;
@@ -98,15 +115,18 @@ typedef struct	s_game
 	t_texture	w_wall;
 
 	t_player    player;
+	t_cast		cast;
+	t_keys		keys;
 	t_ray		ray;
 	t_wall		wall;
-	t_cast		cast;
 	
 	char		**map;
 	int			max_x;
 	int			max_y;
 
 	int			side;
+
+	int			sprint;
 
 	void    	*img;
 	char    	*address;
@@ -124,6 +144,7 @@ void	get_map_info(t_game *game);
 
 //rander
 void	render_game(t_game *game);
+void	draw_wall_slice(t_game *game, int ray_index, float dist_world);
 
 // moves :
 void	move_left(t_game *game);
