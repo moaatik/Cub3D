@@ -26,42 +26,42 @@ int	ft_exit(t_game *game)
 
 int	key_press(int keycode, t_game *game)
 {
-	if (keycode == 53)
+	if (keycode == 65307)
 		game->keys.escape = 1;
-	else if (keycode == 13)
+	else if (keycode == 119)
 		game->keys.w = 1;
-	else if (keycode == 1)
+	else if (keycode == 115)
 		game->keys.s = 1;
-	else if (keycode == 123)
+	else if (keycode == 65361)
 		game->keys.left = 1;
-	else if (keycode == 124)
+	else if (keycode == 65363)
 		game->keys.right = 1;
-	else if (keycode == 0)
-		game->keys.d = 1;
-	else if (keycode == 2)
+	else if (keycode == 100)
 		game->keys.a = 1;
-	else if (keycode == 257)
+	else if (keycode == 97)
+		game->keys.d = 1;
+	else if (keycode == 65505)
 		game->sprint = 2;
 	return (0);
 }
 
 int	key_release(int keycode, t_game *game)
 {
-	if (keycode == 53)
+	if (keycode == 65307)
 		game->keys.escape = 0;
-	else if (keycode == 13)
+	else if (keycode == 119)
 		game->keys.w = 0;
-	else if (keycode == 1)
+	else if (keycode == 115)
 		game->keys.s = 0;
-	else if (keycode == 123)
+	else if (keycode == 65361)
 		game->keys.left = 0;
-	else if (keycode == 124)
+	else if (keycode == 65363)
 		game->keys.right = 0;
-	else if (keycode == 0)
-		game->keys.d = 0;
-	else if (keycode == 2)
+	else if (keycode == 100)
 		game->keys.a = 0;
-	else if (keycode == 257)
+	else if (keycode == 97)
+		game->keys.d = 0;
+	else if (keycode == 65505)
 		game->sprint = 1;
 	return (0);
 }

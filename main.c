@@ -18,10 +18,10 @@ int	main(int ac, char **av)
 
 	parse_map(ac, av, &game);
 	mlx_data_init(&game);
-	mlx_hook(game.window, 2, 0, key_press, &game);
-	mlx_hook(game.window, 3, 0, key_release, &game);
+	mlx_hook(game.window, 2, 1L << 0, key_press, &game);
+	mlx_hook(game.window, 3, 1L << 1, key_release, &game);
 	mlx_loop_hook(game.mlx, update, &game);
-	mlx_hook(game.window, 17, 0, ft_exit, &game);
+	mlx_hook(game.window, 17, 1L << 17, ft_exit, &game);
 	mlx_loop(game.mlx);
 	return (0);
 }

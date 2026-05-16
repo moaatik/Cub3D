@@ -13,17 +13,17 @@
 #ifndef CUB_H
 # define CUB_H
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include <mlx.h>
-# include <math.h>
-# include <stdbool.h>
+#include "mlx/mlx.h"
+#include <fcntl.h>
+#include <math.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 # define BLOCK_SIZE 64
 # define SPEED 3
 # define ROT_SPEED 0.05
-# define SCREEN_WIDTH 2000
+# define SCREEN_WIDTH 1500
 # define SCREEN_HEIGHT 1000
 
 //* macro for get_next_line
